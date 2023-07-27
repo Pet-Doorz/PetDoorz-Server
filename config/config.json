@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "DnIIq9JXOsxSua2i",
-    "database": "petdoorz_db_dev",
+    "database": "postgres",
     "host": "db.xfajtdvnldgpsbabkjhu.supabase.co",
     "port": 5432,
     "dialect": "postgres"

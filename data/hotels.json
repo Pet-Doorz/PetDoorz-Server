@@ -3,7 +3,7 @@
         "email": "alpha@mail.com",
         "password": "alpha",
         "name": "Alpha Pet Hotel",
-        "location": "",
+        "location": "-6.147642181387086 106.71119003020036",
         "balance": 18000000,
         "logoHotel": "https://picsum.photos/400/600",
         "status": "active"
@@ -12,7 +12,7 @@
         "email": "beta@mail.com",
         "password": "beta",
         "name": "Beta Pet Stay",
-        "location": "",
+        "location": "-6.133314829896815 106.69052579994603",
         "balance": 45000000,
         "logoHotel": "https://picsum.photos/300/500",
         "status": "active"
@@ -21,7 +21,7 @@
         "email": "charlie@mail.com",
         "password": "charlie",
         "name": "Charlie Pet Service",
-        "location": "",
+        "location": "-6.134627866827636 106.69137007856173",
         "balance": 80000000,
         "logoHotel": "https://picsum.photos/450/650",
         "status": "active"

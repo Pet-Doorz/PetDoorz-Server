@@ -2,14 +2,14 @@
     {
         "email": "user1@mail.com",
         "password": "user1",
-        "fullname": "John Doe",
+        "fullName": "John Doe",
         "phoneNumber": "08123456789",
         "balance": 78000000
     },
     {
         "email": "user2@mail.com",
         "password": "user2",
-        "fullname": "John Pantau",
+        "fullName": "John Pantau",
         "phoneNumber": "081234567890",
         "balance": 15000
     }
