@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Hotel extends Model {
     /**
@@ -13,17 +11,25 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Hotel.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    name: DataTypes.STRING,
-    location: DataTypes.GEOMETRY,
-    balance: DataTypes.INTEGER,
-    logoHotel: DataTypes.STRING,
-    status: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Hotel',
+  Hotel.init(
+    {
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      name: DataTypes.STRING,
+      location: DataTypes.GEOMETRY,
+      balance: DataTypes.INTEGER,
+      logoHotel: DataTypes.STRING,
+      status: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Hotel",
+    }
+  );
+
+  Hotel.addHook("beforeCreate", async (hotel) => {
+    hotel.status = "active";
   });
+
   return Hotel;
 };
