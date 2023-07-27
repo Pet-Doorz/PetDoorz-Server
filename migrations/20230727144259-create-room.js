@@ -16,13 +16,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       capacity: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       price: {
         type: Sequelize.INTEGER
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
