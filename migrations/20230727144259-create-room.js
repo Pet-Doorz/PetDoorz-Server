@@ -23,7 +23,8 @@ module.exports = {
         allowNull: false
       },
       capacity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       price: {
         type: Sequelize.INTEGER,
