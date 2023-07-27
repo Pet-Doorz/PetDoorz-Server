@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { encrypt } = require("../helpers/password");
 module.exports = (sequelize, DataTypes) => {
   class Hotel extends Model {
     /**
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Hotel.addHook("beforeCreate", async (hotel) => {
     hotel.status = "active";
+    hotel.password = encrypt(hotel.password);
   });
 
   return Hotel;

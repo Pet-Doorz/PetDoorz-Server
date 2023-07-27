@@ -1,12 +1,12 @@
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt } = require("../helpers/password");
 const { Hotel } = require("../models");
+const bcrypt = require("bcryptjs");
 
 class HotelController {
   static async login(req, res, next) {
     try {
-      if (!email || !password) throw { name: "NoEmailPassword" };
-
+      if (!req.body) throw { name: "NoEmailPassword" };
       const { email, password } = req.body;
 
       const instanceHotel = await Hotel.findOne({
@@ -16,7 +16,7 @@ class HotelController {
       });
 
       if (!instanceHotel) throw { name: `InvalidEmailPassword` };
-      const isValid = decrypt.compare(password, instanceHotel.password);
+      const isValid = bcrypt.compareSync(password, instanceHotel.password);
 
       if (!isValid) {
         throw { name: "InvalidEmailPassword" };
