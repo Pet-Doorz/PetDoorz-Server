@@ -36,7 +36,8 @@ module.exports = {
         allowNull: false
       },
       checkOut: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       },
       totalPet: {
         type: Sequelize.INTEGER,

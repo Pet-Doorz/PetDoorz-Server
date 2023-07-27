@@ -4,6 +4,13 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     let data = require('../data/bookings.json').map(e => {
+      e.checkIn = new Date()
+
+      const today = new Date();
+      let tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1)
+      e.checkOut = tomorrow
+
       e.createdAt = e.updatedAt = new Date()
       return e
     })

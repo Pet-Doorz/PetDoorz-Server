@@ -1,6 +1,9 @@
 [
     {
         "CustomerId": 1,
-        "RoomId": 1 
+        "RoomId": 1,
+        "totalPet": 3,
+        "grandTotal": 140000,
+        "petImage": ""
     }
 ]
