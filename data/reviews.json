@@ -1,6 +1,20 @@
 [
     {
         "CustomerId": 1,
-        "HotelId": 1
+        "HotelId": 1,
+        "rating": 5,
+        "comment": "Good service"
+    },
+    {
+        "CustomerId": 1,
+        "HotelId": 2,
+        "rating": 3,
+        "comment": "Average"
+    },
+    {
+        "CustomerId": 2,
+        "HotelId": 3,
+        "rating": 1,
+        "comment": "Bad service"
     }
 ]

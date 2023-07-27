@@ -10,16 +10,27 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       HotelId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {  
+          model: {
+            tableName: "Hotels"
+          }
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       capacity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       price: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       description: {
         type: Sequelize.TEXT
