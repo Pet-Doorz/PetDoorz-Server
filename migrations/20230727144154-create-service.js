@@ -20,10 +20,12 @@ module.exports = {
       },
       HotelId: {
         type: Sequelize.INTEGER,
-        references: {
-          tableName: "Hotels",
-        },
         allowNull: false,
+        references: {
+          model: {
+            tableName: "Hotels"
+          }
+        },
         onDelete: "CASCADE",
         onUpdate: "CASCADE"
       },

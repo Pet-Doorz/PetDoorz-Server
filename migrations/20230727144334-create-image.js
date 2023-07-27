@@ -16,7 +16,9 @@ module.exports = {
       RoomId: {
         type: Sequelize.INTEGER,
         references: {
-          tableName: "Rooms"
+          model: {
+            tableName: "Rooms"
+          }
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE"
@@ -25,7 +27,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          tableName: "Hotels"
+          model: {
+            tableName: "Hotels"
+          }
         },
         onDelete: "CASCADE",
         onUpdate: "CASCADE"
