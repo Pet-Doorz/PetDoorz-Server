@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Grooming",
+        "price": 120000,
+        "HotelId": 1
+    },
+    {
+        "name": "Styling",
+        "price": 80000,
+        "HotelId": 1
+    }
+]

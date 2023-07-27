@@ -1,0 +1,62 @@
+[
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 1,
+        "HotelId": 1
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 1,
+        "HotelId": 1
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 2,
+        "HotelId": 1
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 2,
+        "HotelId": 1
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 1,
+        "HotelId": 2
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 3,
+        "HotelId": 2
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 3,
+        "HotelId": 2
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 4,
+        "HotelId": 2
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 4,
+        "HotelId": 2
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 5,
+        "HotelId": 3
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 5,
+        "HotelId": 3
+    },
+    {
+        "imageUrl": "https://picsum.photos/400/600",
+        "RoomId": 6,
+        "HotelId": 3
+    }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "HotelId": 1,
+        "name": "VIP",
+        "capacity": 6,
+        "price": 210000,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum sed nulla eu blandit. Praesent eu turpis sed sapien mollis viverra. Etiam nec magna in elit malesuada elementum egestas id mi. Cras laoreet lacus nec imperdiet molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed augue felis, blandit in sapien quis, egestas eleifend augue. Donec porta magna vulputate velit viverra, at gravida dui imperdiet. Pellentesque dignissim pharetra tincidunt. Etiam sagittis sapien eget lacus ullamcorper, in elementum nunc egestas. Nullam malesuada, dui ut auctor porttitor, eros libero fermentum purus, nec pulvinar mi diam vitae lectus. Cras a justo quis nisi fringilla sagittis sit amet ac augue. Aenean ut nunc maximus, fermentum nisi in, commodo lorem."
+    },
+    {
+        "HotelId": 1,
+        "name": "Deluxe",
+        "capacity": 18,
+        "price": 125000,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum sed nulla eu blandit. Praesent eu turpis sed sapien mollis viverra. Etiam nec magna in elit malesuada elementum egestas id mi. Cras laoreet lacus nec imperdiet molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed augue felis, blandit in sapien quis, egestas eleifend augue. Donec porta magna vulputate velit viverra, at gravida dui imperdiet. Pellentesque dignissim pharetra tincidunt. Etiam sagittis sapien eget lacus ullamcorper, in elementum nunc egestas. Nullam malesuada, dui ut auctor porttitor, eros libero fermentum purus, nec pulvinar mi diam vitae lectus. Cras a justo quis nisi fringilla sagittis sit amet ac augue. Aenean ut nunc maximus, fermentum nisi in, commodo lorem."
+    },
+    {
+        "HotelId": 2,
+        "name": "Coco",
+        "capacity": 10,
+        "price": 250000,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum sed nulla eu blandit. Praesent eu turpis sed sapien mollis viverra. Etiam nec magna in elit malesuada elementum egestas id mi. Cras laoreet lacus nec imperdiet molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed augue felis, blandit in sapien quis, egestas eleifend augue. Donec porta magna vulputate velit viverra, at gravida dui imperdiet. Pellentesque dignissim pharetra tincidunt. Etiam sagittis sapien eget lacus ullamcorper, in elementum nunc egestas. Nullam malesuada, dui ut auctor porttitor, eros libero fermentum purus, nec pulvinar mi diam vitae lectus. Cras a justo quis nisi fringilla sagittis sit amet ac augue. Aenean ut nunc maximus, fermentum nisi in, commodo lorem."
+    },
+    {
+        "HotelId": 2,
+        "name": "Bruno",
+        "capacity": 25,
+        "price": 105000,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum sed nulla eu blandit. Praesent eu turpis sed sapien mollis viverra. Etiam nec magna in elit malesuada elementum egestas id mi. Cras laoreet lacus nec imperdiet molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed augue felis, blandit in sapien quis, egestas eleifend augue. Donec porta magna vulputate velit viverra, at gravida dui imperdiet. Pellentesque dignissim pharetra tincidunt. Etiam sagittis sapien eget lacus ullamcorper, in elementum nunc egestas. Nullam malesuada, dui ut auctor porttitor, eros libero fermentum purus, nec pulvinar mi diam vitae lectus. Cras a justo quis nisi fringilla sagittis sit amet ac augue. Aenean ut nunc maximus, fermentum nisi in, commodo lorem."
+    },
+    {
+        "HotelId": 3,
+        "name": "Elite",
+        "capacity": 3,
+        "price": 270000,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum sed nulla eu blandit. Praesent eu turpis sed sapien mollis viverra. Etiam nec magna in elit malesuada elementum egestas id mi. Cras laoreet lacus nec imperdiet molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed augue felis, blandit in sapien quis, egestas eleifend augue. Donec porta magna vulputate velit viverra, at gravida dui imperdiet. Pellentesque dignissim pharetra tincidunt. Etiam sagittis sapien eget lacus ullamcorper, in elementum nunc egestas. Nullam malesuada, dui ut auctor porttitor, eros libero fermentum purus, nec pulvinar mi diam vitae lectus. Cras a justo quis nisi fringilla sagittis sit amet ac augue. Aenean ut nunc maximus, fermentum nisi in, commodo lorem."
+    },
+    {
+        "HotelId": 3,
+        "name": "Standard",
+        "capacity": 8,
+        "price": 145000,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vestibulum sed nulla eu blandit. Praesent eu turpis sed sapien mollis viverra. Etiam nec magna in elit malesuada elementum egestas id mi. Cras laoreet lacus nec imperdiet molestie. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed augue felis, blandit in sapien quis, egestas eleifend augue. Donec porta magna vulputate velit viverra, at gravida dui imperdiet. Pellentesque dignissim pharetra tincidunt. Etiam sagittis sapien eget lacus ullamcorper, in elementum nunc egestas. Nullam malesuada, dui ut auctor porttitor, eros libero fermentum purus, nec pulvinar mi diam vitae lectus. Cras a justo quis nisi fringilla sagittis sit amet ac augue. Aenean ut nunc maximus, fermentum nisi in, commodo lorem."
+    }
+]
