@@ -1,0 +1,29 @@
+[
+    {
+        "email": "alpha@mail.com",
+        "password": "alpha",
+        "name": "Alpha Pet Hotel",
+        "location": "",
+        "balance": 18000000,
+        "logoHotel": "https://picsum.photos/400/600",
+        "status": "active"
+    },
+    {
+        "email": "beta@mail.com",
+        "password": "beta",
+        "name": "Beta Pet Stay",
+        "location": "",
+        "balance": 45000000,
+        "logoHotel": "https://picsum.photos/300/500",
+        "status": "active"
+    },
+    {
+        "email": "charlie@mail.com",
+        "password": "charlie",
+        "name": "Charlie Pet Service",
+        "location": "",
+        "balance": 80000000,
+        "logoHotel": "https://picsum.photos/450/650",
+        "status": "active"
+    }
+]
