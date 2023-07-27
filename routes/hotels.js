@@ -5,7 +5,7 @@ router.get("/", (req, res) => {
   res.send("Hello PetDoorz! This is Hotels Endpoint");
 });
 
-router.get("/login", HotelController.login);
-router.get("/login", HotelController.register);
+router.post("/login", HotelController.login);
+router.post("/register", HotelController.register);
 
 module.exports = router;
