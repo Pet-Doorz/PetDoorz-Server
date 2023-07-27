@@ -1,0 +1,72 @@
+[
+    {
+        "fullName": "Juan Alfonsus Siahaan",
+        "email": "juan@mail.com",
+        "password": "juan",
+        "phoneNumber": "087528558696",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Michael San Fransisco TheManik",
+        "email": "DrunkenLee@mail.com",
+        "password": "mike",
+        "phoneNumber": "0808080",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Raymond Mcd Saragih",
+        "email": "raymcnd@mail.com",
+        "password": "raymond",
+        "phoneNumber": "087897897",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Leonardo Ringo",
+        "email": "leonardo@mail.com",
+        "password": "leonardo",
+        "phoneNumber": "0875856",
+        "balance": 20000000
+    },
+    {
+        "fullName": "customer",
+        "email": "customer@mail.com",
+        "password": "customer",
+        "phoneNumber": "0875289984",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Kresna Silalahi",
+        "email": "krocoach@mail.com",
+        "password": "kresna",
+        "phoneNumber": "0877484189",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Sabilal Simatupang",
+        "email": "sabilal@mail.com",
+        "password": "sabilal",
+        "phoneNumber": "087548998",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Nathanza Gaurangga Sidabutar",
+        "email": "gaurangga@mail.com",
+        "password": "gaurangga",
+        "phoneNumber": "0875418418",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Shela MDp. Situmorang",
+        "email": "shela@mail.com",
+        "password": "shela",
+        "phoneNumber": "0875987987",
+        "balance": 20000000
+    },
+    {
+        "fullName": "Alvin Budi Hutagalung",
+        "email": "alvin@mail.com",
+        "password": "alvin",
+        "phoneNumber": "087529876",
+        "balance": 20000000
+    }
+]
