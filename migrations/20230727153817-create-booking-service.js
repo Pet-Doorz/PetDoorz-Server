@@ -10,10 +10,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       BookingId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          tableName: "Bookings"
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       ServiceId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          tableName: "Services"
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
       },
       createdAt: {
         allowNull: false,
