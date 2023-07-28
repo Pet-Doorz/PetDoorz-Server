@@ -16,10 +16,45 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Review.init({
-    rating: DataTypes.INTEGER,
-    comment: DataTypes.TEXT,
-    HotelId: DataTypes.INTEGER,
-    CustomerId: DataTypes.INTEGER
+    rating: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Rating is required"
+        },
+        notNull: {
+          msg: "Rating is required"
+        }
+      }
+    },
+    comment: {
+      type: DataTypes.TEXT
+    },
+    HotelId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Hotel ID is required"
+        },
+        notNull: {
+          msg: "Hotel ID is required"
+        }
+      }
+    },
+    CustomerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Customer ID is required"
+        },
+        notNull: {
+          msg: "Customer ID is required"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Review',

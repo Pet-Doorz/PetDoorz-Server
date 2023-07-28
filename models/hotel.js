@@ -18,13 +18,97 @@ module.exports = (sequelize, DataTypes) => {
   }
   Hotel.init(
     {
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      name: DataTypes.STRING,
-      location: DataTypes.GEOMETRY,
-      balance: DataTypes.INTEGER,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: {
+          args: true,
+          msg: "Email must be unique"
+        },
+        validate: {
+          notEmpty: {
+            msg: "Email is required"
+          },
+          notNull: {
+            msg: "Email is required"
+          },
+          isEmail: {
+            args: true,
+            msg: "Invalid email format"
+          }
+        }
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Password is required"
+          },
+          notNull: {
+            msg: "Password is required"
+          }
+        }
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Hotel name is required"
+          },
+          notNull: {
+            msg: "Hotel name is required"
+          }
+        }
+      },
+      location: {
+        type: DataTypes.GEOMETRY,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Location is required"
+          },
+          notNull: {
+            msg: "Location is required"
+          }
+        }
+      },
+      balance: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          notEmpty: {
+            msg: "Balance is required"
+          },
+          notNull: {
+            msg: "Balance is required"
+          },
+          min: {
+            args: 0,
+            balance: "Balance must be greater than or equal to 0"
+          }
+        }
+      },
       logoHotel: DataTypes.STRING,
-      status: DataTypes.STRING,
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "inactive",
+        validate: {
+          notEmpty: {
+            msg: "Status is required"
+          },
+          notNull: {
+            msg: "Status is required"
+          },
+          isIn: {
+            args: [["inactive", "active"]],
+            msg: "Invalid hotel status"
+          }
+        }
+      },
     },
     {
       sequelize,
