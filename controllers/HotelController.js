@@ -31,7 +31,7 @@ class HotelController {
       } else {
         const payload = {
           id: instanceHotel.id,
-          name: instanceHotel.name,
+          email: instanceHotel.email,
         };
         // generate jwt token
         const token = jwtSign(payload);
