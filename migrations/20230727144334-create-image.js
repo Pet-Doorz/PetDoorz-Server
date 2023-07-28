@@ -13,16 +13,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      RoomId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: "Rooms"
-          }
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE"
-      },
       HotelId: {
         type: Sequelize.INTEGER,
         allowNull: false,
