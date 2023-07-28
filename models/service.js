@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Service.belongsTo(models.Hotel)
+      Service.hasMany(models.BookingService)
     }
   }
   Service.init({
