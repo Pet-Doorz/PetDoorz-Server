@@ -45,6 +45,10 @@ function errorHandler(err, req, res, next) {
       res.status(400).json({ message: err.ApiResponse.error_messages[0] });
       break;
 
+    case "InvalidBooking":
+      res.status(400).json({ message: "Invalid booking" });
+      break;
+
     default:
       res.status(500).json({ message: "Internal server error" });
       break;

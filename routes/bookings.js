@@ -6,5 +6,7 @@ router.get('/', (req, res) => {
 })
 
 router.post("/", BookingController.createBooking)
+router.patch("/:id/process", BookingController.updateStatusToProcess)
+router.patch("/:id/done", BookingController.updateStatusToDone)
 
 module.exports = router
