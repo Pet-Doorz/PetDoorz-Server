@@ -1,3 +1,5 @@
-class CustomerController {}
+class CustomerController {
+  //
+}
 
-module.exports = CustomerController
+module.exports = CustomerController;

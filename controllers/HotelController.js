@@ -1,6 +1,14 @@
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt } = require("../helpers/password");
-const { Hotel } = require("../models");
+const {
+  Hotel,
+  Room,
+  Booking,
+  Service,
+  Review,
+  Sequelize,
+} = require("../models");
+const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
 class HotelController {
@@ -55,6 +63,45 @@ class HotelController {
         status: "Created",
         message: "New Hotel has been added",
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async findNearestHotel(req, res, next) {
+    const distance = req.query.distance;
+    const long = req.query.long;
+    const lat = req.query.lat;
+    try {
+      if (!req.query.long || !req.query.lat || !req.query.distance) {
+        const instanceHotels = await Hotel.findAll({
+          include: [
+            { model: Room, include: [{ model: Booking }] },
+            { model: Service },
+            { model: Review },
+          ],
+        });
+        return res.status(200).json(instanceHotels);
+      }
+
+      const nearestHotels = await Hotel.findAll({
+        where: Sequelize.where(
+          Sequelize.fn(
+            "ST_DWithin",
+            Sequelize.col("location"),
+            Sequelize.fn("ST_MakePoint", long, lat),
+            distance,
+            true
+          ),
+          true
+        ),
+        include: [
+          { model: Room, include: [{ model: Booking }] },
+          { model: Service },
+          { model: Review },
+        ],
+      });
+      res.status(200).json(nearestHotels);
     } catch (error) {
       next(error);
     }
