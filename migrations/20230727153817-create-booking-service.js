@@ -11,7 +11,6 @@ module.exports = {
       },
       BookingId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
           model: {
             tableName: "Bookings"

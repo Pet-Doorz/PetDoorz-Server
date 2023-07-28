@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Customer.hasMany(models.Customer)
+      Customer.hasMany(models.Booking)
       Customer.hasMany(models.Review)
     }
   }
@@ -83,10 +83,7 @@ module.exports = (sequelize, DataTypes) => {
         notNull: {
           msg: "Balance is required"
         },
-        min: {
-          args: 0,
-          balance: "Balance must be greater than or equal to 0"
-        }
+        min: 0
       }
     }
   }, {
