@@ -18,15 +18,6 @@ module.exports = (sequelize, DataTypes) => {
   BookingService.init({
     BookingId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: "Booking ID is required"
-        },
-        notNull: {
-          msg: "Booking ID is required"
-        }
-      }
     },
     ServiceId: {
       type: DataTypes.INTEGER,

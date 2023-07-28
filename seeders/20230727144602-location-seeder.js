@@ -7,7 +7,7 @@ module.exports = {
       e.createdAt = e.updatedAt = new Date()
       e.location = Sequelize.fn(
         'ST_GeomFromText',
-        'POINT('+e.location+')'
+        'POINT('+e.location.coordinates[0].split(', ').join(' ')+')'
       )
       return e
     })

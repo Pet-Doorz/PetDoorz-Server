@@ -3,27 +3,225 @@
         "email": "alpha@mail.com",
         "password": "alpha",
         "name": "Alpha Pet Hotel",
-        "location": "-6.147642181387086 106.71119003020036",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.147642181387086, 106.71119003020036"
+            ]
+        },
         "balance": 18000000,
         "logoHotel": "https://picsum.photos/400/600",
-        "status": "active"
+        "status": "active",
+        "description": "Welcome to Alpha Pet Hotel – the ultimate paradise for your furry friends! Our luxurious pet hotel offers a one-of-a-kind experience tailored exclusively to meet your pet's every need. With a wide range of amenities and dedicated staff, your beloved companions will feel like royalty during their stay with us."
     },
     {
         "email": "beta@mail.com",
         "password": "beta",
         "name": "Beta Pet Stay",
-        "location": "-6.133314829896815 106.69052579994603",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.133314829896815, 106.69052579994603"
+            ]
+        },
         "balance": 45000000,
         "logoHotel": "https://picsum.photos/300/500",
-        "status": "active"
+        "status": "active",
+        "description": "Introducing Beta – the ultimate haven for your beloved furry companions! Our pet hotel is designed to provide a relaxing and enjoyable experience for pets of all shapes and sizes. With a focus on comfort, safety, and fun, Fur-ever Haven is the perfect home away from home for your pets."
     },
     {
         "email": "charlie@mail.com",
         "password": "charlie",
         "name": "Charlie Pet Service",
-        "location": "-6.134627866827636 106.69137007856173",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.134627866827636, 106.69137007856173"
+            ]
+        },
         "balance": 80000000,
         "logoHotel": "https://picsum.photos/450/650",
-        "status": "active"
+        "status": "active",
+        "description": "Welcome to Charlie – where tails wag and purrs echo in harmony! Our pet hotel is a delightful retreat for your furry companions, providing a blend of comfort, care, and playfulness in a safe and welcoming environment."
+    },
+    {
+        "email": "wetnose@mail.com",
+        "password": "wetnose",
+        "name": "Wet Nose Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.089879960500525, 106.74343694616486"
+            ]
+        },
+        "balance": 5000000,
+        "logoHotel": "https://img.freepik.com/premium-vector/hand-drawn-logo-pets-hotel-with-bag-paw_341076-282.jpg",
+        "status": "active",
+        "description": "Welcome to Wet Nose, a slice of heaven for your cherished furry family members! Nestled amidst lush greenery and serene landscapes, our pet hotel offers an unparalleled retreat for pets seeking comfort, care, and companionship."
+    },
+    {
+        "email": "carissa@mail.com",
+        "password": "carissa",
+        "name": "CARISSA PET HOTEL & GROOMING",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.133711021925897, 106.69166907303139"
+            ]
+        },
+        "balance": 500000,
+        "logoHotel": "https://img.freepik.com/premium-vector/dog-hotel-logo-dog-with-house-vector-design-logo_691317-203.jpg?w=360",
+        "status": "active",
+        "description": "Welcome to Carissa Pet Hotel, a haven of happiness and comfort for your four-legged darlings! Nestled in a picturesque setting, our pet hotel is a delightful retreat designed to cater to the unique needs and desires of your beloved pets."
+    },
+    {
+        "email": "happytails@mail.com",
+        "password": "happytails",
+        "name": "Happy Tails Pet Resort",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-7.155450867102649, 106.53226637249874"
+            ]
+        },
+        "balance": 50000,
+        "logoHotel": "https://static.vecteezy.com/system/resources/previews/002/811/803/non_2x/pet-hotel-logo-design-template-logotype-of-pets-hotel-in-outline-style-symbol-of-dog-or-cat-home-with-icon-of-paw-inside-isolated-on-white-background-free-vector.jpg",
+        "status": "active",
+        "description": "Happy Tails Pet Resort: Where Paws Play and Hearts Stay! Welcome to Happy Tails Pet Resort, a whimsical wonderland for your furry companions to indulge in endless fun and relaxation. Our pet hotel is a magical destination where pets' dreams come true, ensuring a tail-wagging, meow-worthy experience like no other"
+    },
+    {
+        "email": "pawspurrfect@mail.com",
+        "password": "pawspurrfect",
+        "name": "Paws & Purrfect Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "40.852908615201514, -74.05310900799618"
+            ]
+        },
+        "balance": 5000000,
+        "logoHotel": "https://lh5.googleusercontent.com/p/AF1QipNOkjsKcMBL_Fia95bCQvwISPZBNG_Addfw3AYm=w408-h544-k-no",
+        "status": "active",
+        "description": "Paws & Purrfect Pet Hotel: Where Your Pets Are Treated Like Royalty! Welcome to Paws & Purrfect Pet Hotel, an enchanting retreat for your furry companions to experience the ultimate luxury and care. Our pet hotel is designed with your pets' comfort and happiness in mind, offering a haven of relaxation, play, and pampering."
+    },
+    {
+        "email": "furryretreat@mail.com",
+        "password": "furryreatreat",
+        "name": "Furry Retreat Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.155680652530998, 106.7090099848713"
+            ]
+        },
+        "balance": 50000,
+        "logoHotel": "https://images-platform.99static.com//lgS3RyN0zCUMeCXoiCF_9anh8xA=/136x209:879x952/fit-in/500x500/99designs-contests-attachments/115/115601/attachment_115601512",
+        "status": "active",
+        "description": "Furry Retreat Pet Hotel: Where Your Pets' Happiness is Our Priority! Welcome to Furry Retreat Pet Hotel, a delightful haven where tails wag and whiskers twitch with joy! Our pet hotel is dedicated to providing a home away from home for your beloved furry companions, ensuring they experience the ultimate comfort, care, and playfulness during their stay."
+    },
+    {
+        "email": "pawsnplay@mail.com",
+        "password": "pawsnplay",
+        "name": "Paws 'n Play Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.152598249360606, 106.71216766538323"
+            ]
+        },
+        "balance": 750000,
+        "logoHotel": "https://static.vecteezy.com/system/resources/previews/012/751/126/original/dog-house-logo-cute-dog-house-logo-pet-shop-logo-illustration-pet-hotel-logo-design-template-pet-care-and-animal-logo-design-free-vector.jpg",
+        "status": "active",
+        "description": "Paws 'n Play Pet Hotel: Where Every Tail Wags with Delight! Welcome to Paws 'n Play Pet Hotel, a haven of happiness and tail-wagging adventures for your beloved furry friends! Our pet hotel is dedicated to providing a safe, comfortable, and fun-filled retreat for pets of all shapes and sizes."
+    },
+    {
+        "email": "pethaven@mail.com",
+        "password": "pethaven",
+        "name": "Pet Haven Retreat",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.238616113227343, 106.79872985542833"
+            ]
+        },
+        "balance": 875000,
+        "logoHotel": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnGSbZt0tXsLAfZ5tZugFl0BDokzQI5Kv91g&usqp=CAU",
+        "status": "active",
+        "description": "Pet Haven Retreat: Where Tails Never Stop Wagging! Welcome to Pet Haven Retreat, a paradise for your furry companions to unwind, play, and be pampered to their hearts' content! Our pet hotel is a haven of comfort and care, designed to provide a home away from home for your beloved pets."
+    },
+    {
+        "email": "pawsnwhiskers@mail.com",
+        "password": "pawsnwhiskers",
+        "name": "Paws & Whiskers Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.3002528462359555, 106.89056317756896"
+            ]
+        },
+        "balance": 800000000,
+        "logoHotel": "https://images-platform.99static.com/oIpJvcrylWiYeRqWgQfvBt7VjdE=/500x500/top/smart/99designs-contests-attachments/43/43820/attachment_43820435",
+        "status": "active",
+        "description": "Paws & Whiskers Pet Hotel: A Blissful Retreat for Your Beloved Pets! Welcome to Paws & Whiskers Pet Hotel, a sanctuary of joy and comfort where your furry friends will experience the best of care, attention, and playfulness. Our pet hotel is dedicated to providing a home away from home for your cherished companions."
+    },
+    {
+        "email": "happypaws@mail.com",
+        "password": "happypaws",
+        "name": "Happy Paws Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "29.976809869578865, 106.47485695655821"
+            ]
+        },
+        "balance": 1500000,
+        "logoHotel": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTblHpTefwDW3FYnvyn8pLA-3BGLAqFLJChFQ&usqp=CAU",
+        "status": "active",
+        "description": "Happy Paws Pet Hotel: Where Happiness and Wagging Tails Collide! Welcome to Happy Paws Pet Hotel, a haven of joy and comfort for your beloved furry companions. Our pet hotel is a magical retreat designed to provide the highest level of care, playfulness, and relaxation for your pets."
+    },
+    {
+        "email": "pawsparadise@mail.com",
+        "password": "pawsparadise",
+        "name": "Paws Paradise Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-24.982068069894808, 133.94968786182275"
+            ]
+        },
+        "balance": 2000000,
+        "logoHotel": "https://us.123rf.com/450wm/olhayerofieieva/olhayerofieieva1608/olhayerofieieva160800003/61384719-dog-hotel-icon.jpg?ver=6",
+        "status": "active",
+        "description": "Paws Paradise Pet Hotel: Where Purrfection Meets Tail-Wagging Fun! Welcome to Paws Paradise Pet Hotel, a delightful escape for your furry companions to enjoy a vacation filled with comfort, care, and excitement. Our pet hotel is dedicated to providing a home-away-from-home experience, where pets can indulge in endless play and relaxation."
+    },
+    {
+        "email": "pawpalace@mail.com",
+        "password": "pawpalace",
+        "name": "Paw Palace Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "39.632078970919764, -101.28260118643725"
+            ]
+        },
+        "balance": 9875000,
+        "logoHotel": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIlpWr6VSEApyRJYl0uYWsFvbObAMhFNBZfA&usqp=CAU",
+        "status": "active",
+        "description": "Paw Palace Pet Hotel: Where Your Pets' Dreams Come True! Welcome to Paw Palace Pet Hotel, a majestic sanctuary where tails wag and purrs reverberate with joy! Our pet hotel is dedicated to providing a lavish and loving retreat for your cherished furry family members."
+    },
+    {
+        "email": "furryhaven@mail.com",
+        "password": "furryhaven",
+        "name": "Furry Haven Pet Hotel",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                "-6.173049603232912, 106.82765298809636"
+            ]
+        },
+        "balance": 900000,
+        "logoHotel": "https://img.freepik.com/premium-vector/pet-hotel-icon-vector-isolated-white-background_125869-1548.jpg?w=2000",
+        "status": "active",
+        "description": "Furry Haven Pet Hotel: Where Tails Wag and Whiskers Purr with Delight! Welcome to Furry Haven Pet Hotel, a cozy and enchanting retreat where your furry companions will experience the best of care and a tail-wagging good time! Our pet hotel is designed to provide a home away from home for your beloved pets."
     }
 ]
