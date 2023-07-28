@@ -15,8 +15,30 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Image.init({
-    imageUrl: DataTypes.STRING,
-    HotelId: DataTypes.INTEGER
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Image is required"
+        },
+        notNull: {
+          msg: "Image is required"
+        }
+      }
+    },
+    HotelId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Hotel ID is required"
+        },
+        notNull: {
+          msg: "Hotel ID is required"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Image',

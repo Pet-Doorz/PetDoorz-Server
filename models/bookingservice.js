@@ -16,8 +16,30 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   BookingService.init({
-    BookingId: DataTypes.INTEGER,
-    ServiceId: DataTypes.INTEGER
+    BookingId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Booking ID is required"
+        },
+        notNull: {
+          msg: "Booking ID is required"
+        }
+      }
+    },
+    ServiceId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Service ID is required"
+        },
+        notNull: {
+          msg: "Service ID is required"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'BookingService',

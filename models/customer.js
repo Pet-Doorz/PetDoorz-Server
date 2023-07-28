@@ -16,11 +16,79 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Customer.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    fullName: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    balance: DataTypes.INTEGER
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: {
+        args: true,
+        msg: "Email must be unique"
+      },
+      validate: {
+        notEmpty: {
+          msg: "Email is required"
+        },
+        notNull: {
+          msg: "Email is required"
+        },
+        isEmail: {
+          args: true,
+          msg: "Invalid email format"
+        }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Password is required"
+        },
+        notNull: {
+          msg: "Password is required"
+        }
+      }
+    },
+    fullName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Full name is required"
+        },
+        notNull: {
+          msg: "Full name is required"
+        }
+      }
+    },
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Phone number is required"
+        },
+        notNull: {
+          msg: "Phone number is required"
+        }
+      }
+    },
+    balance: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        notEmpty: {
+          msg: "Balance is required"
+        },
+        notNull: {
+          msg: "Balance is required"
+        },
+        min: {
+          args: 0,
+          balance: "Balance must be greater than or equal to 0"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Customer',

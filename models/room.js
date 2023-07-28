@@ -16,12 +16,71 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Room.init({
-    HotelId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    capacity: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
+    HotelId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Hotel ID is required"
+        },
+        notNull: {
+          msg: "Hotel ID is required"
+        }
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Room name is required"
+        },
+        notNull: {
+          msg: "Room name is required"
+        }
+      }
+    },
+    capacity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Capacity is required"
+        },
+        notNull: {
+          msg: "Capacity is required"
+        }
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Price is required"
+        },
+        notNull: {
+          msg: "Price is required"
+        },
+        min: {
+          args: 0,
+          msg: "Price must be greater than or equal to 0"
+        }
+      }
+    },
     description: DataTypes.TEXT,
-    imageUrl: DataTypes.STRING
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Image is required"
+        },
+        notNull: {
+          msg: "Image is required"
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Room',
