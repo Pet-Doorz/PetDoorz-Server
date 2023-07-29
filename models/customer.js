@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { encrypt } = require('../helpers/password');
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     /**
@@ -90,5 +91,14 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Customer',
   });
+
+  Customer.addHook("beforeUpdate", async (customer) => {
+    customer.password = encrypt(customer.password);
+  });
+
+  Customer.addHook("beforeCreate", async (customer) => {
+    customer.password = encrypt(customer.password);
+  });
+
   return Customer;
 };

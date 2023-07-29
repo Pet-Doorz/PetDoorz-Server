@@ -1,7 +1,8 @@
-const { Customer, Sequelize } = require("../models");
+const { Customer, Booking, Review, Sequelize } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
+
 class CustomerController {
   //
   static async login(req, res, next) {
@@ -54,6 +55,35 @@ class CustomerController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async readCustomerById(req, res, next) {
+    try {
+      const { id } = req.params
+      const data = await Customer.findByPk(id, {
+        include: [ Booking, Review ],
+        attributes: { exclude: ['createdAt', 'updatedAt', "password"] }
+      })
+      if (!data) throw { name: "NOTFOUND" }
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async editCustomer(req, res, next) {
+    try {
+      const { id } = req.params
+      const { fullName, password, phoneNumber } = req.body
+      const targetCustomer = await Customer.findByPk(id)
+      if (!targetCustomer) throw { name: "NOTFOUND" }
+      
+      await targetCustomer.update({ fullName, password, phoneNumber })
+      
+      res.status(200).json({ message: `Customer #${id} updated` })
+    } catch (error) {
+      next(error)
     }
   }
 }
