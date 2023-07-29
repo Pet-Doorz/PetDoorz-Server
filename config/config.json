@@ -5,14 +5,16 @@
     "database": "postgres",
     "host": "db.xfajtdvnldgpsbabkjhu.supabase.co",
     "port": 5432,
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
     "database": "petdoorz_test_db",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
     "use_env_variable": "DATABASE_URL"
