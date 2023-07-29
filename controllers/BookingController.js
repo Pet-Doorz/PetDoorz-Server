@@ -1,4 +1,4 @@
-const { Booking, BookingService, Customer, sequelize } = require("../models")
+const { Booking, BookingService, Customer, Hotel, sequelize } = require("../models")
 
 class BookingController {
     static async createBooking(req, res, next) {
@@ -65,10 +65,16 @@ class BookingController {
         }
     }
 
-    // Butuh read by ID
-
-    // Butuh read by customerId --> langsyung
-    // Butuh read by adminId --> dari hotel
+    static async readBookingById(req, res, next) {
+        try {
+            const { id } = req.params.id
+            const data = await Booking.findByPk(id)
+            if (!data) throw { name: "NOTFOUND"}
+            res.status(200).json(data)
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = BookingController
