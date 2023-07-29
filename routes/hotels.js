@@ -12,4 +12,10 @@ router.post('/services/:HotelId', HotelController.addService)
 router.put('/services/:HotelId/:id', HotelController.updateService)
 router.delete('/services/:HotelId/:id', HotelController.deleteService)
 
+//room
+router.get('/rooms/:HotelId', HotelController.getRooms)
+router.post('/rooms/:HotelId', HotelController.addRoom)
+router.put('/rooms/:HotelId/:id', HotelController.updateRoom)
+router.delete('/rooms/:HotelId/:id', HotelController.deleteRoom)
+
 module.exports = router;

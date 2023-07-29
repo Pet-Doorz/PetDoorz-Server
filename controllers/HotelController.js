@@ -228,6 +228,82 @@ class HotelController {
       next(error)
     }
   }
+
+
+  //---------------------ROOM-------------------------
+  static async getRooms(req, res, next) {
+    try {
+      const { HotelId } = req.params
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if (!hotel) throw { name: "NOTFOUND" }
+
+      const rooms = await Room.findAll({ where: { HotelId }, attributes: { exclude: ['createdAt', 'updatedAt'] } })
+
+      res.status(200).json(rooms)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async addRoom(req, res, next) {
+    try {
+      const { HotelId } = req.params
+
+      const { name, capacity, price, description, imageUrl } = req.body
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if (!hotel) throw { name: "NOTFOUND" }
+
+      const newRoom = await Room.create({ name, capacity, price, description, imageUrl, HotelId })
+
+      res.status(201).json(newRoom)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async updateRoom(req, res, next) {
+    try {
+      const { HotelId, id } = req.params
+
+      const { name, capacity, price, description, imageUrl } = req.body
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if (!hotel) throw { name: "NOTFOUND" }
+
+      const room = await Room.findByPk(id)
+
+      if (!room) throw { name: "NOTFOUND" }
+
+      const updatedRoom = await Room.update({ name, capacity, price, description, imageUrl, HotelId }, { where: { id } })
+
+      res.status(201).json({ message: `Room with id ${id} from HotelId ${HotelId} updated successfully!` })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async deleteRoom(req, res, next) {
+    try {
+      const { HotelId, id } = req.params
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if (!hotel) throw { name: "NOTFOUND" }
+
+      const deletedRoom = await Room.destroy({ where: { id } })
+
+      if (deletedRoom === 0) throw { name: "NOTFOUND" }
+
+      res.status(200).json({ message: `Room with id ${id} from HotelId ${HotelId} successfully deleted!` })
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = HotelController;
