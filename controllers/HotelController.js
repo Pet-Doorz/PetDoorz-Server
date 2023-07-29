@@ -76,7 +76,7 @@ class HotelController {
     const lat = req.query.lat;
     const tglMasuk = req.query.checkin; //DD/MM/YYYY
     const tglKeluar = req.query.checkout; //DD/MM/YYYY
-    console.log(tglMasuk, tglKeluar, "<------------");
+    const totalPet = req.query.totalPet;
     const tglMasukDate = new Date(
       `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
     );
@@ -90,7 +90,8 @@ class HotelController {
         !req.query.lat ||
         !req.query.distance ||
         !req.query.checkin ||
-        !req.query.checkout
+        !req.query.checkout ||
+        !req.query.totalPet
       ) {
         const instanceHotels = await Hotel.findAll({
           include: [
@@ -135,7 +136,8 @@ class HotelController {
             const Roomdata = await HotelController.getDetail(
               hotel.id,
               tglMasukDate,
-              tglKeluarDate
+              tglKeluarDate,
+              totalPet
             );
             return {
               id: hotel.id,
@@ -206,12 +208,16 @@ class HotelController {
           { model: Review },
         ],
       });
-
+      let currentTotalPet = 0;
       const detailed = instanceHotel.Rooms.map((e) => {
+        e.Bookings.map((e) => {
+          currentTotalPet += e.totalPet;
+        });
         return {
           name: e.name,
           price: e.price,
-          currentCapacity: e.capacity - e.Bookings.length,
+          currentCapacity:
+            e.capacity - e.Bookings.length - totalPet - currentTotalPet,
           bookings: e.Bookings,
         };
       });
