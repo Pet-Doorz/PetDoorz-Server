@@ -1,0 +1,1 @@
+// Supaya customer hanya bisa RU data miliknya
