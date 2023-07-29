@@ -1,7 +1,8 @@
-const { Customer, Booking, Review, Sequelize } = require("../models");
-const { jwtSign } = require("../helpers/jwt");
-const { decrypt } = require("../helpers/password");
-const bcrypt = require("bcryptjs");
+const { Customer, Booking, Review, Sequelize } = require("../models")
+const { jwtSign } = require("../helpers/jwt")
+const { decrypt } = require("../helpers/password")
+const bcrypt = require("bcryptjs")
+const midtransClient = require('midtrans-client')
 
 class CustomerController {
   //
@@ -24,7 +25,8 @@ class CustomerController {
       } else {
         const payload = {
           id: instanceCustomer.id,
-          fullName: instanceCustomer.name,
+          fullName: instanceCustomer.fullName,
+          email: instanceCustomer.email // saya tambahin, soalnya butuh email di authCustomer dan generate midtrans
         };
         // generate jwt token
         const token = jwtSign(payload);
@@ -62,7 +64,7 @@ class CustomerController {
     try {
       const { id } = req.params
       const data = await Customer.findByPk(id, {
-        include: [ Booking, Review ],
+        include: [Booking, Review],
         attributes: { exclude: ['createdAt', 'updatedAt', "password"] }
       })
       if (!data) throw { name: "NOTFOUND" }
@@ -78,10 +80,45 @@ class CustomerController {
       const { fullName, password, phoneNumber } = req.body
       const targetCustomer = await Customer.findByPk(id)
       if (!targetCustomer) throw { name: "NOTFOUND" }
-      
+
       await targetCustomer.update({ fullName, password, phoneNumber })
-      
+
       res.status(200).json({ message: `Customer #${id} updated` })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async generateMidtrans(req, res, next) {
+    try {
+      // dapetin grand total dulu
+      const { grandTotal } = req.body // harus dapet total price dari client
+
+      // dapetin email customer, dapetin customer dari authentication customer
+      const customer = await Customer.findByPk(req.customer.id)
+
+      // ini buat create snap paymentnya, ENV jangan lupa
+      let snap = new midtransClient.Snap({
+        isProduction: false,
+        serverKey: process.env.MIDTRANS_SERVER_KEY
+      })
+
+      // parameter yang dibutuhin midtrans
+      let parameter = {
+        "transaction_details": {
+          "order_id": "TX" + Math.floor(Math.random() * 90000), // order ID harus unique, jadi gua giniin aja ya
+          "gross_amount": grandTotal
+        },
+        "credit_card": {
+          "secure": true
+        },
+        "customer_details": {
+          "email": customer.email
+        }
+      };
+
+      const midtransToken = await snap.createTransaction(parameter)
+      res.status(201).json(midtransToken)
     } catch (error) {
       next(error)
     }
