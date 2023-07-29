@@ -8,7 +8,7 @@ const {
   Review,
   Sequelize,
 } = require("../models");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
 class HotelController {
@@ -104,6 +104,86 @@ class HotelController {
       res.status(200).json(nearestHotels);
     } catch (error) {
       next(error);
+    }
+  }
+
+  //---------------------SERVICES----------------------
+  static async getServices(req, res, next) {
+    try {
+      const { HotelId } = req.params
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if (!hotel) throw { name: 'NOTFOUND' }
+
+      const service = await Service.findAll({
+        where: { HotelId }, attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
+      })
+
+      res.status(200).json(service)
+
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async addService(req, res, next) {
+    try {
+      const { HotelId } = req.params
+
+      const { name, price } = req.body
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if (!hotel) throw { name: "NOTFOUND" }
+
+      const newService = await Service.create({ name, price, HotelId })
+
+      res.status(201).json(newService)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async updateService(req, res, next) {
+    try {
+      const { HotelId, id } = req.params
+
+      const { name, price } = req.body
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if (!hotel) throw { name: "NOTFOUND" }
+
+      const service = await Service.findByPk(id)
+
+      if (!service) throw { name: "NOTFOUND" }
+
+      const newService = await Service.update({ name, price, HotelId }, { where: { id } })
+
+      res.status(201).json({ message: `Service with id ${id} on HotelId ${HotelId} succefully updated!` })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async deleteService(req, res, next) {
+    try {
+      const { HotelId, id } = req.params
+
+      const hotel = await Hotel.findByPk(HotelId)
+
+      if(!hotel) throw{name: "NOTFOUND"}
+
+      const deletedService = await Service.destroy({where: {id}})
+
+      if(deletedService === 0) throw{name: "NOTFOUND"}
+
+      res.status(200).json({message: `Service with id ${id} from HotelId ${HotelId} deleted successfully!`})
+    } catch (error) {
+      next(error)
     }
   }
 }
