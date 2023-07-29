@@ -1,0 +1,1 @@
+// Supaya hotel hanya bisa RU data miliknya
