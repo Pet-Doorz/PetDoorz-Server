@@ -106,6 +106,49 @@ class HotelController {
       next(error);
     }
   }
+
+  static async getDetail(req, res, next) {
+    try {
+      const { id } = req.params || 1;
+
+      const instanceHotel = await Hotel.findByPk(id, {
+        include: [
+          {
+            model: Room,
+            include: [
+              {
+                model: Booking,
+                where: {
+                  status: { [Op.in]: ["booked", "process"] },
+                  id: {
+                    [Op.notIn]: Sequelize.literal(
+                      '(SELECT "RoomId" FROM "Bookings")'
+                    ),
+                  },
+                },
+                required: false,
+              },
+            ],
+          },
+          { model: Service },
+          { model: Review },
+        ],
+      });
+      const countAvailableRoom = instanceHotel.Rooms.length;
+      const detailed = instanceHotel.Rooms.map((e) => {
+        return {
+          name: e.name,
+          price: e.price,
+          total: e.capacity - e.Bookings.length,
+          status: e.capacity - e.Bookings.length <= 0 ? "Full" : `Available`,
+        };
+      });
+      console.log(countAvailableRoom, detailed);
+      res.status(200).json(detailed);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = HotelController;
