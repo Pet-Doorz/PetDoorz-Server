@@ -262,13 +262,14 @@ class HotelController {
       const { email, password, name, location, logoHotel } = req.body;
       const instanceHotel = await Hotel.findByPk(id);
       if (!instanceHotel) throw { name: "NOTFOUND" };
-      instanceHotel.update({
+      await instanceHotel.update({
         email,
         password,
         name,
         location,
         logoHotel,
       });
+      res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` })
     } catch (error) {
       next(error);
     }
