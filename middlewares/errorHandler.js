@@ -9,12 +9,8 @@ function errorHandler(err, req, res, next) {
       res.status(400).json({ message: "Email must be unique" });
       break;
 
-    case "NoEmailPassword":
+    case "NullEmail":
       res.status(400).json({ message: "Email is required" });
-      break;
-
-    case "NullUsername":
-      res.status(400).json({ message: "Username is required" });
       break;
 
     case "NullPassword":
