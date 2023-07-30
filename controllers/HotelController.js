@@ -10,6 +10,7 @@ const {
 } = require("../models");
 const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
+const calculateDistance = require("../helpers/calculateDistance");
 
 class HotelController {
   static async login(req, res, next) {
@@ -139,12 +140,17 @@ class HotelController {
               tglKeluarDate,
               totalPet
             );
+            const perDistance = await calculateDistance(
+              hotel.location.coordinates,
+              [+req.query.long, +req.query.lat]
+            );
             return {
               id: hotel.id,
               email: hotel.email,
               name: hotel.name,
               location: hotel.location,
               logoHotel: hotel.logoHotel,
+              distance: perDistance,
               detailRoom: Roomdata,
             };
           } catch (error) {
