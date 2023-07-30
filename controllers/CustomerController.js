@@ -25,7 +25,7 @@ class CustomerController {
       } else {
         const payload = {
           id: instanceCustomer.id,
-          fullName: instanceCustomer.name,
+          email: instanceCustomer.email
         };
         // generate jwt token
         const token = jwtSign(payload);
