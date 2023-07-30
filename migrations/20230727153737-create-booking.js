@@ -48,8 +48,7 @@ module.exports = {
         allowNull: false
       },
       petImage: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
       },
       status: {
         type: Sequelize.STRING,
