@@ -15,8 +15,9 @@ const calculateDistance = require("../helpers/calculateDistance");
 class HotelController {
   static async login(req, res, next) {
     try {
-      if (!req.body) throw { name: "NoEmailPassword" };
       const { email, password } = req.body;
+      if (!email) throw { name: "NullEmail" };
+      if (!password) throw { name: "NullPassword" };
 
       const instanceHotel = await Hotel.findOne({
         where: {
