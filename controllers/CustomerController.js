@@ -92,7 +92,7 @@ class CustomerController {
   static async generateMidtrans(req, res, next) {
     try {
       // dapetin grand total dulu
-      const { grandTotal } = req.body // harus dapet total price dari client
+      const { total } = req.body // harus dapet total price dari client
 
       // dapetin email customer, dapetin customer dari authentication customer
       const customer = await Customer.findByPk(req.customer.id)
@@ -107,7 +107,7 @@ class CustomerController {
       let parameter = {
         "transaction_details": {
           "order_id": "TX" + Math.floor(Math.random() * 90000), // order ID harus unique, jadi gua giniin aja ya
-          "gross_amount": grandTotal
+          "gross_amount": total
         },
         "credit_card": {
           "secure": true
@@ -119,6 +119,23 @@ class CustomerController {
 
       const midtransToken = await snap.createTransaction(parameter)
       res.status(201).json(midtransToken)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async addBalanceCustomer(req, res, next) {
+    try {
+      const { id } = req.params
+      const { total } = req.body
+
+      const customer = await Customer.findByPk(id)
+
+      await customer.update({
+        balance: customer.balance + +total // total dari req.body bentuknye string, kudu diubah duls
+      })
+
+      res.status(200).json({ message: 'Success add balance' })
     } catch (error) {
       next(error)
     }
