@@ -22,8 +22,6 @@ class CustomerController {
       if (!instanceCustomer) throw { name: `InvalidEmailPassword` };
       const isValid = bcrypt.compareSync(password, instanceCustomer.password);
 
-      console.log(password, instanceCustomer.password);
-
       if (!isValid) {
         throw { name: "InvalidEmailPassword" };
       } else {
@@ -66,7 +64,7 @@ class CustomerController {
 
   static async readCustomerById(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.customer || req.params;
       const data = await Customer.findByPk(id, {
         include: [Booking, Review],
         attributes: { exclude: ["createdAt", "updatedAt", "password"] },
@@ -80,7 +78,7 @@ class CustomerController {
 
   static async editCustomer(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.customer || req.params;
       const { fullName, password, phoneNumber } = req.body;
       const targetCustomer = await Customer.findByPk(id);
       if (!targetCustomer) throw { name: "NOTFOUND" };
@@ -130,15 +128,15 @@ class CustomerController {
 
   static async addBalanceCustomer(req, res, next) {
     try {
-      const { id } = req.params;
-      const { total } = req.body;
+      // const { id } = req.params;
+      // const { total } = req.body;
 
-      const customer = await Customer.findByPk(id);
+      // const customer = await Customer.findByPk(id);
 
-      await customer.update({
-        balance: customer.balance + +total, // total dari req.body bentuknye string, kudu diubah duls
-      });
-
+      // await customer.update({
+      //   balance: customer.balance + +total, // total dari req.body bentuknye string, kudu diubah duls
+      // });
+      console.log(req.body)
       res.status(200).json({ message: "Success add balance" });
     } catch (error) {
       next(error);
@@ -154,6 +152,20 @@ class CustomerController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async getCustomerByAccessToken(req, res, next) {
+    try {
+      const { id } = req.customer
+      const data = await Customer.findByPk(id, {
+        include: [Booking, Review],
+        attributes: { exclude: ['createdAt', 'updatedAt', "password"] }
+      })
+      if (!data) throw { name: "NOTFOUND" }
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
     }
   }
 }
