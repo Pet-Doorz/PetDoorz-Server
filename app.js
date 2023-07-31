@@ -19,3 +19,4 @@ app.use(errorHandler)
 
 console.clear()
 
+module.exports = app
