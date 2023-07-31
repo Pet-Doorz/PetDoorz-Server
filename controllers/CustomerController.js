@@ -4,6 +4,8 @@ const { decrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
 const midtransClient = require("midtrans-client");
 const getChatHistory = require("../helpers/thirdPartyRequest");
+const uuid = require('uuid');
+const crypto = require("crypto");
 
 class CustomerController {
   //
@@ -164,6 +166,25 @@ class CustomerController {
       })
       if (!data) throw { name: "NOTFOUND" }
       res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  // -------------- IMAGEKIT -------------
+  static getImagekitSignature(req, res, next) {
+    try {
+      const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
+      var token = req.query.token || uuid.v4();
+      var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
+      var privateAPIKey = `${privateKey}`;
+      var signature = crypto.createHmac('sha1', privateAPIKey).update(token+expire).digest('hex');
+
+      res.status(200).json({
+        token : token,
+        expire : expire,
+        signature : signature
+      })
     } catch (error) {
       next(error)
     }

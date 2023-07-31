@@ -2,7 +2,6 @@ const router = require("express").Router();
 const CustomerController = require("../controllers/CustomerController");
 const HotelController = require("../controllers/HotelController");
 const authenticationHotel = require("../middlewares/authenticationHotel");
-const HotelAuthentication = require("../middlewares/authenticationHotel");
 
 router.get("/", HotelController.findNearestHotel);
 router.put("/:id", authenticationHotel, HotelController.update);
@@ -16,6 +15,8 @@ router.get(
   authenticationHotel,
   HotelController.getChatHistory
 );
+
+router.get("/imagekit", HotelController.getImagekitSignature)
 
 //service
 router.get("/services", authenticationHotel, HotelController.getServices);
