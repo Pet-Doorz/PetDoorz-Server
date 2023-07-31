@@ -2,6 +2,7 @@ const router = require("express").Router();
 const CustomerController = require("../controllers/CustomerController");
 const authenticationCustomer = require("../middlewares/authenticationCustomer");
 
+
 router.get("/", authenticationCustomer, CustomerController.readCustomerById);
 router.post("/", CustomerController.register);
 router.put("/", authenticationCustomer, CustomerController.editCustomer);
