@@ -25,7 +25,7 @@ class CustomerController {
       } else {
         const payload = {
           id: instanceCustomer.id,
-          email: instanceCustomer.email
+          email: instanceCustomer.email,
         };
         // generate jwt token
         const token = jwtSign(payload);
@@ -61,30 +61,42 @@ class CustomerController {
 
   static async readCustomerById(req, res, next) {
     try {
-      const { id } = req.params
+      const { id } = req.params;
       const data = await Customer.findByPk(id, {
-        include: [ Booking, Review ],
-        attributes: { exclude: ['createdAt', 'updatedAt', "password"] }
-      })
-      if (!data) throw { name: "NOTFOUND" }
-      res.status(200).json(data)
+        include: [Booking, Review],
+        attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+      });
+      if (!data) throw { name: "NOTFOUND" };
+      res.status(200).json(data);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async editCustomer(req, res, next) {
     try {
-      const { id } = req.params
-      const { fullName, password, phoneNumber } = req.body
-      const targetCustomer = await Customer.findByPk(id)
-      if (!targetCustomer) throw { name: "NOTFOUND" }
-      
-      await targetCustomer.update({ fullName, password, phoneNumber })
-      
-      res.status(200).json({ message: `Customer #${id} updated` })
+      const { id } = req.params;
+      const { fullName, password, phoneNumber } = req.body;
+      const targetCustomer = await Customer.findByPk(id);
+      if (!targetCustomer) throw { name: "NOTFOUND" };
+
+      await targetCustomer.update({ fullName, password, phoneNumber });
+
+      res.status(200).json({ message: `Customer #${id} updated` });
     } catch (error) {
-      next(error)
+      next(error);
+    }
+  }
+
+  static async getChatHistory(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const result = await getChatHistory(userId);
+      res.status(200).json({
+        data: result,
+      });
+    } catch (error) {
+      next(error);
     }
   }
 }
