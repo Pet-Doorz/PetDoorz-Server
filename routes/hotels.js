@@ -16,7 +16,6 @@ router.get(
 
 //service
 router.get("/services/:HotelId", HotelController.getServices);
-router.get("/chats/:userId", auth, CustomerController.readCustomerById);
 router.post("/services/:HotelId", HotelController.addService);
 router.put("/services/:HotelId/:id", HotelController.updateService);
 router.delete("/services/:HotelId/:id", HotelController.deleteService);
