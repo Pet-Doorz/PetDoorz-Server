@@ -23,6 +23,8 @@ router.patch(
   CustomerController.addBalanceCustomer
 );
 
+router.get("/imagekit", CustomerController.getImagekitSignature)
+
 // Untuk keperluan development
 router.get("/:id", CustomerController.readCustomerById);
 router.put("/:id", CustomerController.editCustomer);

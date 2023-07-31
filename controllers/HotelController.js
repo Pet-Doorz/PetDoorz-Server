@@ -12,6 +12,9 @@ const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const calculateDistance = require("../helpers/calculateDistance");
 const getChatHistory = require("../helpers/thirdPartyRequest");
+const uuid = require('uuid');
+const crypto = require("crypto");
+
 
 class HotelController {
   static async login(req, res, next) {
@@ -558,6 +561,25 @@ class HotelController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  // -------------- IMAGEKIT -------------
+  static getImagekitSignature(req, res, next) {
+    try {
+      const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
+      var token = req.query.token || uuid.v4();
+      var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
+      var privateAPIKey = `${privateKey}`;
+      var signature = crypto.createHmac('sha1', privateAPIKey).update(token+expire).digest('hex');
+
+      res.status(200).json({
+        token : token,
+        expire : expire,
+        signature : signature
+      })
+    } catch (error) {
+      next(error)
     }
   }
 }
