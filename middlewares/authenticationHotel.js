@@ -14,7 +14,7 @@ async function authenticationHotel(req, res, next) {
     });
     if (!hotel) throw { name: "Unauthenticated" };
 
-    req.hotel = { id };
+    req.hotel = { id, email };
 
     next();
   } catch (error) {
