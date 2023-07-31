@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1690811822586" clover="3.2.0">
-  <project timestamp="1690811822586" name="All files">
-    <metrics statements="543" coveredstatements="194" conditionals="138" coveredconditionals="10" methods="73" coveredmethods="23" elements="754" coveredelements="227" complexity="0" loc="543" ncloc="543" packages="6" files="26" classes="26"/>
+<coverage generated="1690813766028" clover="3.2.0">
+  <project timestamp="1690813766028" name="All files">
+    <metrics statements="543" coveredstatements="215" conditionals="138" coveredconditionals="21" methods="73" coveredmethods="25" elements="754" coveredelements="261" complexity="0" loc="543" ncloc="543" packages="6" files="26" classes="26"/>
     <package name="PetDoorz-Server">
       <metrics statements="15" coveredstatements="15" conditionals="4" coveredconditionals="2" methods="0" coveredmethods="0"/>
       <file name="app.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\app.js">
@@ -24,7 +24,7 @@
       </file>
     </package>
     <package name="PetDoorz-Server.controllers">
-      <metrics statements="286" coveredstatements="23" conditionals="94" coveredconditionals="0" methods="36" coveredmethods="1"/>
+      <metrics statements="286" coveredstatements="35" conditionals="94" coveredconditionals="7" methods="36" coveredmethods="2"/>
       <file name="BookingController.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\controllers\BookingController.js">
         <metrics statements="34" coveredstatements="2" conditionals="4" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -63,32 +63,32 @@
         <line num="77" count="1" type="stmt"/>
       </file>
       <file name="CustomerController.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\controllers\CustomerController.js">
-        <metrics statements="63" coveredstatements="13" conditionals="18" coveredconditionals="0" methods="8" coveredmethods="1"/>
+        <metrics statements="63" coveredstatements="25" conditionals="18" coveredconditionals="7" methods="8" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="14" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="22" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="25" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="12" count="7" type="stmt"/>
+        <line num="13" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="22" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="25" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="26" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="46" count="9" type="stmt"/>
-        <line num="47" count="9" type="stmt"/>
-        <line num="48" count="9" type="stmt"/>
-        <line num="49" count="9" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="41" count="6" type="stmt"/>
+        <line num="46" count="11" type="stmt"/>
+        <line num="47" count="11" type="stmt"/>
+        <line num="48" count="11" type="stmt"/>
+        <line num="49" count="11" type="stmt"/>
         <line num="56" count="1" type="stmt"/>
-        <line num="61" count="8" type="stmt"/>
+        <line num="61" count="10" type="stmt"/>
         <line num="66" count="0" type="stmt"/>
         <line num="67" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="68" count="0" type="stmt"/>
@@ -322,7 +322,7 @@
       </file>
     </package>
     <package name="PetDoorz-Server.helpers">
-      <metrics statements="28" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="1"/>
+      <metrics statements="28" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="2"/>
       <file name="calculateDistance.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\helpers\calculateDistance.js">
         <metrics statements="9" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="2" count="0" type="stmt"/>
@@ -336,18 +336,18 @@
         <line num="23" count="1" type="stmt"/>
       </file>
       <file name="jwt.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\helpers\jwt.js">
-        <metrics statements="4" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <metrics statements="4" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
         <line num="8" count="0" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
       </file>
       <file name="password.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\helpers\password.js">
         <metrics statements="6" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="4" count="2" type="stmt"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="6" count="2" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
         <line num="10" count="0" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
       </file>
@@ -365,7 +365,7 @@
       </file>
     </package>
     <package name="PetDoorz-Server.middlewares">
-      <metrics statements="75" coveredstatements="15" conditionals="30" coveredconditionals="1" methods="5" coveredmethods="1"/>
+      <metrics statements="75" coveredstatements="23" conditionals="30" coveredconditionals="5" methods="5" coveredmethods="1"/>
       <file name="authenticationCustomer.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\middlewares\authenticationCustomer.js">
         <metrics statements="11" coveredstatements="3" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -424,19 +424,19 @@
         <line num="28" count="1" type="stmt"/>
       </file>
       <file name="errorHandler.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\middlewares\errorHandler.js">
-        <metrics statements="30" coveredstatements="5" conditionals="14" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="2" count="8" type="stmt"/>
-        <line num="3" count="8" type="cond" truecount="1" falsecount="13"/>
-        <line num="5" count="8" type="stmt"/>
-        <line num="6" count="8" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
+        <metrics statements="30" coveredstatements="13" conditionals="14" coveredconditionals="5" methods="1" coveredmethods="1"/>
+        <line num="2" count="16" type="stmt"/>
+        <line num="3" count="16" type="cond" truecount="5" falsecount="9"/>
+        <line num="5" count="9" type="stmt"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
@@ -489,7 +489,7 @@
         <line num="95" count="1" type="stmt"/>
         <line num="96" count="0" type="stmt"/>
         <line num="99" count="1" type="stmt"/>
-        <line num="100" count="1" type="stmt"/>
+        <line num="100" count="3" type="stmt"/>
         <line num="103" count="1" type="stmt"/>
       </file>
       <file name="hotel.js" path="C:\Users\USER\Desktop\hacktiv8\PetDoorz\Server\PetDoorz-Server\models\hotel.js">
