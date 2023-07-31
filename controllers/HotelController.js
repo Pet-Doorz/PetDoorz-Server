@@ -11,6 +11,7 @@ const {
 const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const calculateDistance = require("../helpers/calculateDistance");
+const getChatHistory = require("../helpers/thirdPartyRequest");
 
 class HotelController {
   static async login(req, res, next) {
@@ -269,7 +270,7 @@ class HotelController {
         location,
         logoHotel,
       });
-      res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` })
+      res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` });
     } catch (error) {
       next(error);
     }
@@ -447,6 +448,18 @@ class HotelController {
 
       res.status(200).json({
         message: `Room with id ${id} from HotelId ${HotelId} successfully deleted!`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getChatHistory(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const result = await getChatHistory(userId);
+      res.status(200).json({
+        data: result,
       });
     } catch (error) {
       next(error);
