@@ -3,6 +3,8 @@ const CustomerController = require("../controllers/CustomerController");
 const authenticationCustomer = require("../middlewares/authenticationCustomer");
 
 router.get("/");
+router.post("/", CustomerController.register);
+router.post("/login", CustomerController.login);
 router.get("/:id", CustomerController.readCustomerById)
 router.put("/:id", CustomerController.editCustomer)
 router.post("/login", CustomerController.login)

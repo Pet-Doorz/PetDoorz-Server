@@ -14,7 +14,7 @@ async function authenticationCustomer(req, res, next) {
     });
     if (!customer) throw { name: "Unauthenticated" };
 
-    req.customer = { id };
+    req.customer = { id, email };
 
     next();
   } catch (error) {

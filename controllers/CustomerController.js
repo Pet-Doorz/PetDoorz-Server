@@ -8,8 +8,9 @@ class CustomerController {
   //
   static async login(req, res, next) {
     try {
-      if (!req.body) throw { name: "NoEmailPassword" };
       const { email, password } = req.body;
+      if (!email) throw { name: "NullEmail" };
+      if (!password) throw { name: "NullPassword" };
 
       const instanceCustomer = await Customer.findOne({
         where: {

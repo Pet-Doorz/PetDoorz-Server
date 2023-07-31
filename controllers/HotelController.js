@@ -10,12 +10,15 @@ const {
 } = require("../models");
 const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
+const calculateDistance = require("../helpers/calculateDistance");
+const getChatHistory = require("../helpers/thirdPartyRequest");
 
 class HotelController {
   static async login(req, res, next) {
     try {
-      if (!req.body) throw { name: "NoEmailPassword" };
       const { email, password } = req.body;
+      if (!email) throw { name: "NullEmail" };
+      if (!password) throw { name: "NullPassword" };
 
       const instanceHotel = await Hotel.findOne({
         where: {
@@ -76,7 +79,7 @@ class HotelController {
     const lat = req.query.lat;
     const tglMasuk = req.query.checkin; //DD/MM/YYYY
     const tglKeluar = req.query.checkout; //DD/MM/YYYY
-    console.log(tglMasuk, tglKeluar, "<------------");
+    const totalPet = req.query.totalPet;
     const tglMasukDate = new Date(
       `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
     );
@@ -90,7 +93,8 @@ class HotelController {
         !req.query.lat ||
         !req.query.distance ||
         !req.query.checkin ||
-        !req.query.checkout
+        !req.query.checkout ||
+        !req.query.totalPet
       ) {
         const instanceHotels = await Hotel.findAll({
           include: [
@@ -135,7 +139,12 @@ class HotelController {
             const Roomdata = await HotelController.getDetail(
               hotel.id,
               tglMasukDate,
-              tglKeluarDate
+              tglKeluarDate,
+              totalPet
+            );
+            const perDistance = await calculateDistance(
+              hotel.location.coordinates,
+              [+req.query.long, +req.query.lat]
             );
             return {
               id: hotel.id,
@@ -143,6 +152,7 @@ class HotelController {
               name: hotel.name,
               location: hotel.location,
               logoHotel: hotel.logoHotel,
+              distance: perDistance,
               detailRoom: Roomdata,
             };
           } catch (error) {
@@ -151,7 +161,16 @@ class HotelController {
         })
       );
 
-      res.status(200).json(dataHotels);
+      const hotelsWithAvailableRooms = dataHotels.filter((hotel) => {
+        return (
+          hotel.detailRoom.length > 0 &&
+          hotel.detailRoom.every(
+            (room) => room.currentCapacity >= 0 && room.currentCapacity > 0
+          )
+        );
+      });
+
+      res.status(200).json(hotelsWithAvailableRooms);
     } catch (error) {
       next(error);
     }
@@ -206,12 +225,16 @@ class HotelController {
           { model: Review },
         ],
       });
-
+      let currentTotalPet = 0;
       const detailed = instanceHotel.Rooms.map((e) => {
+        e.Bookings.map((e) => {
+          currentTotalPet += e.totalPet;
+        });
         return {
           name: e.name,
           price: e.price,
-          currentCapacity: e.capacity - e.Bookings.length,
+          currentCapacity:
+            e.capacity - e.Bookings.length - totalPet - currentTotalPet,
           bookings: e.Bookings,
         };
       });
@@ -240,13 +263,14 @@ class HotelController {
       const { email, password, name, location, logoHotel } = req.body;
       const instanceHotel = await Hotel.findByPk(id);
       if (!instanceHotel) throw { name: "NOTFOUND" };
-      instanceHotel.update({
+      await instanceHotel.update({
         email,
         password,
         name,
         location,
         logoHotel,
       });
+      res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` });
     } catch (error) {
       next(error);
     }
@@ -254,156 +278,191 @@ class HotelController {
   //---------------------SERVICES----------------------
   static async getServices(req, res, next) {
     try {
-      const { HotelId } = req.params
+      const { HotelId } = req.params;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: 'NOTFOUND' }
+      if (!hotel) throw { name: "NOTFOUND" };
 
       const service = await Service.findAll({
-        where: { HotelId }, attributes: {
-          exclude: ['createdAt', 'updatedAt']
-        }
-      })
+        where: { HotelId },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      });
 
-      res.status(200).json(service)
-
+      res.status(200).json(service);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async addService(req, res, next) {
     try {
-      const { HotelId } = req.params
+      const { HotelId } = req.params;
 
-      const { name, price } = req.body
+      const { name, price } = req.body;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: "NOTFOUND" }
+      if (!hotel) throw { name: "NOTFOUND" };
 
-      const newService = await Service.create({ name, price, HotelId })
+      const newService = await Service.create({ name, price, HotelId });
 
-      res.status(201).json(newService)
+      res.status(201).json(newService);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async updateService(req, res, next) {
     try {
-      const { HotelId, id } = req.params
+      const { HotelId, id } = req.params;
 
-      const { name, price } = req.body
+      const { name, price } = req.body;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: "NOTFOUND" }
+      if (!hotel) throw { name: "NOTFOUND" };
 
-      const service = await Service.findByPk(id)
+      const service = await Service.findByPk(id);
 
-      if (!service) throw { name: "NOTFOUND" }
+      if (!service) throw { name: "NOTFOUND" };
 
-      const newService = await Service.update({ name, price, HotelId }, { where: { id } })
+      const newService = await Service.update(
+        { name, price, HotelId },
+        { where: { id } }
+      );
 
-      res.status(201).json({ message: `Service with id ${id} on HotelId ${HotelId} succefully updated!` })
+      res.status(201).json({
+        message: `Service with id ${id} on HotelId ${HotelId} succefully updated!`,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async deleteService(req, res, next) {
     try {
-      const { HotelId, id } = req.params
+      const { HotelId, id } = req.params;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: "NOTFOUND" }
+      if (!hotel) throw { name: "NOTFOUND" };
 
-      const deletedService = await Service.destroy({ where: { id } })
+      const deletedService = await Service.destroy({ where: { id } });
 
-      if (deletedService === 0) throw { name: "NOTFOUND" }
+      if (deletedService === 0) throw { name: "NOTFOUND" };
 
-      res.status(200).json({ message: `Service with id ${id} from HotelId ${HotelId} deleted successfully!` })
+      res.status(200).json({
+        message: `Service with id ${id} from HotelId ${HotelId} deleted successfully!`,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
-
 
   //---------------------ROOM-------------------------
   static async getRooms(req, res, next) {
     try {
-      const { HotelId } = req.params
+      const { HotelId } = req.params;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: "NOTFOUND" }
+      if (!hotel) throw { name: "NOTFOUND" };
 
-      const rooms = await Room.findAll({ where: { HotelId }, attributes: { exclude: ['createdAt', 'updatedAt'] } })
+      const rooms = await Room.findAll({
+        where: { HotelId },
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      });
 
-      res.status(200).json(rooms)
+      res.status(200).json(rooms);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async addRoom(req, res, next) {
     try {
-      const { HotelId } = req.params
+      const { HotelId } = req.params;
 
-      const { name, capacity, price, description, imageUrl } = req.body
+      const { name, capacity, price, description, imageUrl } = req.body;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: "NOTFOUND" }
+      if (!hotel) throw { name: "NOTFOUND" };
 
-      const newRoom = await Room.create({ name, capacity, price, description, imageUrl, HotelId })
+      const newRoom = await Room.create({
+        name,
+        capacity,
+        price,
+        description,
+        imageUrl,
+        HotelId,
+      });
 
-      res.status(201).json(newRoom)
+      res.status(201).json(newRoom);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async updateRoom(req, res, next) {
     try {
-      const { HotelId, id } = req.params
+      const { HotelId, id } = req.params;
 
-      const { name, capacity, price, description, imageUrl } = req.body
+      const { name, capacity, price, description, imageUrl } = req.body;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: "NOTFOUND" }
+      if (!hotel) throw { name: "NOTFOUND" };
 
-      const room = await Room.findByPk(id)
+      const room = await Room.findByPk(id);
 
-      if (!room) throw { name: "NOTFOUND" }
+      if (!room) throw { name: "NOTFOUND" };
 
-      const updatedRoom = await Room.update({ name, capacity, price, description, imageUrl, HotelId }, { where: { id } })
+      const updatedRoom = await Room.update(
+        { name, capacity, price, description, imageUrl, HotelId },
+        { where: { id } }
+      );
 
-      res.status(201).json({ message: `Room with id ${id} from HotelId ${HotelId} updated successfully!` })
+      res.status(201).json({
+        message: `Room with id ${id} from HotelId ${HotelId} updated successfully!`,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async deleteRoom(req, res, next) {
     try {
-      const { HotelId, id } = req.params
+      const { HotelId, id } = req.params;
 
-      const hotel = await Hotel.findByPk(HotelId)
+      const hotel = await Hotel.findByPk(HotelId);
 
-      if (!hotel) throw { name: "NOTFOUND" }
+      if (!hotel) throw { name: "NOTFOUND" };
 
-      const deletedRoom = await Room.destroy({ where: { id } })
+      const deletedRoom = await Room.destroy({ where: { id } });
 
-      if (deletedRoom === 0) throw { name: "NOTFOUND" }
+      if (deletedRoom === 0) throw { name: "NOTFOUND" };
 
-      res.status(200).json({ message: `Room with id ${id} from HotelId ${HotelId} successfully deleted!` })
+      res.status(200).json({
+        message: `Room with id ${id} from HotelId ${HotelId} successfully deleted!`,
+      });
     } catch (error) {
-      next(error)
+      next(error);
+    }
+  }
+
+  static async getChatHistory(req, res, next) {
+    try {
+      const { userId } = req.params;
+      const result = await getChatHistory(userId);
+      res.status(200).json({
+        data: result,
+      });
+    } catch (error) {
+      next(error);
     }
   }
 }

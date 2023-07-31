@@ -9,12 +9,8 @@ function errorHandler(err, req, res, next) {
       res.status(400).json({ message: "Email must be unique" });
       break;
 
-    case "NoEmailPassword":
+    case "NullEmail":
       res.status(400).json({ message: "Email is required" });
-      break;
-
-    case "NullUsername":
-      res.status(400).json({ message: "Username is required" });
       break;
 
     case "NullPassword":
@@ -34,11 +30,15 @@ function errorHandler(err, req, res, next) {
       break;
 
     case "Unauthenticated":
-      res.status(403).json({ message: "You are not authorized" });
+      res.status(401).json({ message: "You are not authenticated" });
       break;
 
     case "JsonWebTokenError":
       res.status(401).json({ message: "Invalid token" });
+      break;
+
+    case "Forbidden":
+      res.status(403).json({ message: "You are not authorized" });
       break;
 
     case "MidtransError":
@@ -49,6 +49,9 @@ function errorHandler(err, req, res, next) {
       res.status(400).json({ message: "Invalid booking" });
       break;
 
+    case "NullPetImage":
+      res.status(400).json({ message: "Pet image is required" })
+      
     default:
       res.status(500).json({ message: "Internal server error" });
       break;
