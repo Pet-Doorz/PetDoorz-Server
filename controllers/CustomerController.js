@@ -143,6 +143,20 @@ class CustomerController {
       next(error)
     }
   }
+
+  static async getCustomerByAccessToken(req, res, next) {
+    try {
+      const { id } = req.customer
+      const data = await Customer.findByPk(id, {
+        include: [Booking, Review],
+        attributes: { exclude: ['createdAt', 'updatedAt', "password"] }
+      })
+      if (!data) throw { name: "NOTFOUND" }
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = CustomerController;
