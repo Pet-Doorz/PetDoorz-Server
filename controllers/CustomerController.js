@@ -12,6 +12,8 @@ class CustomerController {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
+
+      console.log(email, password, "MASUK");
       if (!email) throw { name: "NullEmail" };
       if (!password) throw { name: "NullPassword" };
 
@@ -37,6 +39,7 @@ class CustomerController {
         res.status(200).json({
           access_token: token,
           fullName: instanceCustomer.name,
+          email: instanceCustomer.email,
         });
       }
     } catch (error) {
@@ -149,15 +152,22 @@ class CustomerController {
 
   static async addBalanceCustomer(req, res, next) {
     try {
-      // const { id } = req.params;
-      // const { total } = req.body;
+      const { order_id } = req.body;
 
-      // const customer = await Customer.findByPk(id);
+      const order = await TopUp.findOne({
+        where: {
+          orderId : order_id
+        }
+      })
 
-      // await customer.update({
-      //   balance: customer.balance + +total, // total dari req.body bentuknye string, kudu diubah duls
-      // });
-      console.log(req.body)
+      console.log(order)
+
+      const customer = await Customer.findByPk(order.CustomerId);
+
+      await customer.update({
+        balance: customer.balance + order.total, // total dari req.body bentuknye string, kudu diubah duls
+      });
+      
       res.status(200).json({ message: "Success add balance" });
     } catch (error) {
       next(error);
