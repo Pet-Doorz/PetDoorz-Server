@@ -1,9 +1,11 @@
-const { Customer, Booking, Review, Sequelize } = require("../models");
+const { Customer, Booking, Review, TopUp, Sequelize } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
 const midtransClient = require("midtrans-client");
 const getChatHistory = require("../helpers/thirdPartyRequest");
+const uuid = require('uuid');
+const crypto = require("crypto");
 
 class CustomerController {
   //
@@ -23,8 +25,6 @@ class CustomerController {
 
       if (!instanceCustomer) throw { name: `InvalidEmailPassword` };
       const isValid = bcrypt.compareSync(password, instanceCustomer.password);
-
-      console.log(password, instanceCustomer.password);
 
       if (!isValid) {
         throw { name: "InvalidEmailPassword" };
@@ -69,7 +69,7 @@ class CustomerController {
 
   static async readCustomerById(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.customer || req.params;
       const data = await Customer.findByPk(id, {
         include: [Booking, Review],
         attributes: { exclude: ["createdAt", "updatedAt", "password"] },
@@ -83,7 +83,7 @@ class CustomerController {
 
   static async editCustomer(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.customer || req.params;
       const { fullName, password, phoneNumber } = req.body;
       const targetCustomer = await Customer.findByPk(id);
       if (!targetCustomer) throw { name: "NOTFOUND" };
@@ -100,9 +100,15 @@ class CustomerController {
     try {
       // dapetin grand total dulu
       const { total } = req.body; // harus dapet total price dari client
+      const order_id = "TX" + Math.floor(Math.random() * 90000)
 
       // dapetin email customer, dapetin customer dari authentication customer
       const customer = await Customer.findByPk(req.customer.id);
+      const topUp = await TopUp.create({
+        CustomerId: customer.id,
+        orderId: order_id,
+        total
+      })
 
       // ini buat create snap paymentnya, ENV jangan lupa
       let snap = new midtransClient.Snap({
@@ -113,7 +119,7 @@ class CustomerController {
       // parameter yang dibutuhin midtrans
       let parameter = {
         transaction_details: {
-          order_id: "TX" + Math.floor(Math.random() * 90000), // order ID harus unique, jadi gua giniin aja ya
+          order_id, // order ID harus unique, jadi gua giniin aja ya
           gross_amount: total,
         },
         credit_card: {
@@ -133,15 +139,15 @@ class CustomerController {
 
   static async addBalanceCustomer(req, res, next) {
     try {
-      const { id } = req.params;
-      const { total } = req.body;
+      // const { id } = req.params;
+      // const { total } = req.body;
 
-      const customer = await Customer.findByPk(id);
+      // const customer = await Customer.findByPk(id);
 
-      await customer.update({
-        balance: customer.balance + +total, // total dari req.body bentuknye string, kudu diubah duls
-      });
-
+      // await customer.update({
+      //   balance: customer.balance + +total, // total dari req.body bentuknye string, kudu diubah duls
+      // });
+      console.log(req.body)
       res.status(200).json({ message: "Success add balance" });
     } catch (error) {
       next(error);
@@ -157,6 +163,39 @@ class CustomerController {
       });
     } catch (error) {
       next(error);
+    }
+  }
+
+  static async getCustomerByAccessToken(req, res, next) {
+    try {
+      const { id } = req.customer
+      const data = await Customer.findByPk(id, {
+        include: [Booking, Review],
+        attributes: { exclude: ['createdAt', 'updatedAt', "password"] }
+      })
+      if (!data) throw { name: "NOTFOUND" }
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  // -------------- IMAGEKIT -------------
+  static getImagekitSignature(req, res, next) {
+    try {
+      const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
+      var token = req.query.token || uuid.v4();
+      var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
+      var privateAPIKey = `${privateKey}`;
+      var signature = crypto.createHmac('sha1', privateAPIKey).update(token+expire).digest('hex');
+
+      res.status(200).json({
+        token : token,
+        expire : expire,
+        signature : signature
+      })
+    } catch (error) {
+      next(error)
     }
   }
 }

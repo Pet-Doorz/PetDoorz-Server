@@ -5,17 +5,17 @@ class BookingController {
         const transaction = await sequelize.transaction()
         try {
             const { id } = req.customer
-            const { RoomId, checkIn, checkOut, totalPet, grandTotal, petImage, bookingServices } = req.body
+            const { RoomId, checkIn, checkOut, totalPet, grandTotal, bookingServices } = req.body
             
             // create booking
             const result1 = await Booking.create({
-                CustomerId: id, RoomId, checkIn, checkOut, totalPet, grandTotal, petImage
+                CustomerId: id, RoomId, checkIn, checkOut, totalPet, grandTotal
             }, { transaction })
             
             // create bookingServices
             const bookingServicesArr = bookingServices.map(e => {
                 return {
-                    BookingId: result1.BookingId,
+                    BookingId: result1.id,
                     ServiceId: e
                 }
             })
