@@ -6,6 +6,7 @@ const {
   Booking,
   Service,
   Review,
+  Image,
   Sequelize,
 } = require("../models");
 const { Op, where } = require("sequelize");
@@ -87,7 +88,8 @@ class HotelController {
           {
             model: Room,
             include: Booking
-          }
+          },
+          Image
         ],
         attributes: { exclude: ["Password"] }
       })
@@ -110,7 +112,8 @@ class HotelController {
           {
             model: Room,
             include: Booking
-          }
+          },
+          Image
         ],
         attributes: { exclude: ["Password"] }
       })
@@ -152,7 +155,9 @@ class HotelController {
             { model: Room, include: [{ model: Booking }] },
             { model: Service },
             { model: Review },
+            { model: Image }
           ],
+          attributes: { exclude: ['password'] }
         });
         return res.status(200).json(instanceHotels);
       }
@@ -171,7 +176,9 @@ class HotelController {
           },
           { model: Service },
           { model: Review },
+          { model: Image }
         ],
+        attributes: { exclude: ['password'] },
         where: Sequelize.where(
           Sequelize.fn(
             "ST_DWithin",

@@ -74,6 +74,9 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      description: {
+        type: DataTypes.TEXT,
+      },
       address: {
         type: DataTypes.STRING,
         allowNull: false,
