@@ -1,4 +1,4 @@
-const { Customer, Booking, Review, Sequelize } = require("../models");
+const { Customer, Booking, Review, TopUp, Sequelize } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
@@ -97,9 +97,15 @@ class CustomerController {
     try {
       // dapetin grand total dulu
       const { total } = req.body; // harus dapet total price dari client
+      const order_id = "TX" + Math.floor(Math.random() * 90000)
 
       // dapetin email customer, dapetin customer dari authentication customer
       const customer = await Customer.findByPk(req.customer.id);
+      const topUp = await TopUp.create({
+        CustomerId: customer.id,
+        orderId: order_id,
+        total
+      })
 
       // ini buat create snap paymentnya, ENV jangan lupa
       let snap = new midtransClient.Snap({
@@ -110,7 +116,7 @@ class CustomerController {
       // parameter yang dibutuhin midtrans
       let parameter = {
         transaction_details: {
-          order_id: "TX" + Math.floor(Math.random() * 90000), // order ID harus unique, jadi gua giniin aja ya
+          order_id, // order ID harus unique, jadi gua giniin aja ya
           gross_amount: total,
         },
         credit_card: {
