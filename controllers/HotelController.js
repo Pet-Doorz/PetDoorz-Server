@@ -80,21 +80,17 @@ class HotelController {
     const tglMasuk = req.query.checkin; //DD/MM/YYYY
     const tglKeluar = req.query.checkout; //DD/MM/YYYY
     const totalPet = req.query.totalPet;
-    const tglMasukDate = new Date(
-      `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
-    );
-    const tglKeluarDate = new Date(
-      `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
-    );
 
     try {
+      console.log(req.query);
       if (
         !req.query.long ||
         !req.query.lat ||
         !req.query.distance ||
         !req.query.checkin ||
         !req.query.checkout ||
-        !req.query.totalPet
+        !req.query.totalPet ||
+        !req.query
       ) {
         const instanceHotels = await Hotel.findAll({
           include: [
@@ -105,7 +101,12 @@ class HotelController {
         });
         return res.status(200).json(instanceHotels);
       }
-
+      const tglMasukDate = new Date(
+        `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
+      const tglKeluarDate = new Date(
+        `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
       const nearestHotels = await Hotel.findAll({
         include: [
           {

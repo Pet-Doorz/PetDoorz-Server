@@ -10,6 +10,8 @@ class CustomerController {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
+
+      console.log(email, password, "MASUK");
       if (!email) throw { name: "NullEmail" };
       if (!password) throw { name: "NullPassword" };
 
@@ -37,6 +39,7 @@ class CustomerController {
         res.status(200).json({
           access_token: token,
           fullName: instanceCustomer.name,
+          email: instanceCustomer.email,
         });
       }
     } catch (error) {
