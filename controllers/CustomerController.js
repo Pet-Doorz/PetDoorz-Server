@@ -1,4 +1,4 @@
-const { Customer, Booking, Review, TopUp, Sequelize } = require("../models");
+const { Customer, Booking, Review, TopUp, Room, Hotel, BookingService, Service, Sequelize } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
@@ -71,7 +71,20 @@ class CustomerController {
     try {
       const { id } = req.customer || req.params;
       const data = await Customer.findByPk(id, {
-        include: [Booking, Review],
+        include: [Review, 
+          {
+            model: Booking,
+            include: [
+              { model: Room,
+                include: { model: Hotel, attributes: ["name"]}
+              },
+              {
+                model: BookingService,
+                include: Service
+              }
+            ]
+          }
+        ],
         attributes: { exclude: ["createdAt", "updatedAt", "password"] },
       });
       if (!data) throw { name: "NOTFOUND" };
