@@ -239,6 +239,7 @@ class HotelController {
               name: hotel.name,
               location: hotel.location,
               logoHotel: hotel.logoHotel,
+              services: hotel.Services,
               reviews: hotel.Reviews,
               images: hotel.Images,
               distance: perDistance,
@@ -253,9 +254,7 @@ class HotelController {
       const hotelsWithAvailableRooms = dataHotels.filter((hotel) => {
         return (
           hotel.detailRoom.length > 0 &&
-          hotel.detailRoom.every(
-            (room) => room.currentCapacity >= 0 && room.currentCapacity > 0
-          )
+          hotel.detailRoom.every((room) => room.currentCapacity > 0)
         );
       });
 
