@@ -328,6 +328,7 @@ class HotelController {
             e.capacity - e.Bookings.length - totalPet - currentTotalPet,
           bookings: e.Bookings,
           description: e.description,
+          imageUrl: e.imageUrl,
         };
       });
       return detailed;
