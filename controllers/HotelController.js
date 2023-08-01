@@ -54,7 +54,7 @@ class HotelController {
   static async register(req, res, next) {
     const date = new Date();
     try {
-      const { email, password, name, location, balance, logoHotel } = req.body;
+      const { email, password, name, location, balance, logoHotel, address, phoneNumber } = req.body;
 
       const newHotel = await Hotel.create({
         email,
@@ -63,6 +63,8 @@ class HotelController {
         location,
         balance,
         logoHotel,
+        address,
+        phoneNumber
       });
 
       res.status(201).json({
@@ -86,7 +88,8 @@ class HotelController {
             model: Room,
             include: Booking
           }
-        ]
+        ],
+        attributes: { exclude: ["Password"] }
       })
       if (!data) throw { name: "NOTFOUND" }
       
@@ -108,7 +111,8 @@ class HotelController {
             model: Room,
             include: Booking
           }
-        ]
+        ],
+        attributes: { exclude: ["Password"] }
       })
       if (!data) throw { name: "NOTFOUND" }
       
@@ -328,7 +332,7 @@ class HotelController {
   static async update(req, res, next) {
     try {
       const { id } = req.hotel;
-      const { email, password, name, location, logoHotel } = req.body;
+      const { email, password, name, location, logoHotel, address, phoneNumber } = req.body;
       const instanceHotel = await Hotel.findByPk(id);
       if (!instanceHotel) throw { name: "NOTFOUND" };
       await instanceHotel.update({
@@ -337,6 +341,8 @@ class HotelController {
         name,
         location,
         logoHotel,
+        address,
+        phoneNumber
       });
       res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` });
     } catch (error) {

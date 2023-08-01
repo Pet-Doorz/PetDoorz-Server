@@ -4,6 +4,8 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     let data = require('../data/hotels.json').map(e => {
+      e.address = `Jl. Sample No. ${Math.ceil(Math.random() * 1000)}`,
+      e.phoneNumber = `0812${Math.ceil(Math.random() * 1000000)}`
       e.createdAt = e.updatedAt = new Date()
       e.location = Sequelize.fn(
         'ST_GeomFromText',
