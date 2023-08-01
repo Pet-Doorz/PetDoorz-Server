@@ -321,6 +321,7 @@ class HotelController {
           currentTotalPet += e.totalPet;
         });
         return {
+          id: e.id,
           name: e.name,
           price: e.price,
           currentCapacity:
