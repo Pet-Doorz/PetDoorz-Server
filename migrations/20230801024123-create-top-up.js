@@ -2,50 +2,34 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Hotels', {
+    await queryInterface.createTable('TopUps', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
-      },
-      password: {
+      orderId: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      location: {
-        type: Sequelize.GEOMETRY('POINT'),
-        allowNull: false
-      },
-      address: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      phoneNumber: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      balance: {
+      CustomerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0
+        references: {
+          model: {
+            tableName: "Customers"
+          }
+        }
       },
-      logoHotel: {
-        type: Sequelize.STRING
+      total: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       status: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "inactive"
+        defaultValue: "incomplete"
       },
       createdAt: {
         allowNull: false,
@@ -58,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Hotels');
+    await queryInterface.dropTable('TopUps');
   }
 };
