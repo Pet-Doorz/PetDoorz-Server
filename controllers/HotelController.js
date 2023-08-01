@@ -134,12 +134,18 @@ class HotelController {
     const tglMasuk = req.query.checkin; //DD/MM/YYYY
     const tglKeluar = req.query.checkout; //DD/MM/YYYY
     const totalPet = req.query.totalPet;
-    const tglMasukDate = new Date(
-      `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
-    );
-    const tglKeluarDate = new Date(
-      `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
-    );
+    let tglMasukDate;
+    if (tglMasuk) {
+      tglMasukDate = new Date(
+        `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
+    }
+    let tglKeluarDate;
+    if (tglKeluar) {
+      tglKeluar = new Date(
+        `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
+    }
 
     try {
       if (
