@@ -232,13 +232,15 @@ class HotelController {
               hotel.location.coordinates,
               [+req.query.long, +req.query.lat]
             );
+
             return {
               id: hotel.id,
               email: hotel.email,
               name: hotel.name,
               location: hotel.location,
               logoHotel: hotel.logoHotel,
-              reviews: hotel.reviews,
+              reviews: hotel.Reviews,
+              images: hotel.Images,
               distance: perDistance,
               detailRoom: Roomdata,
             };
@@ -310,6 +312,7 @@ class HotelController {
           },
           { model: Service },
           { model: Review },
+          { model: Image },
         ],
       });
       let currentTotalPet = 0;
@@ -325,7 +328,6 @@ class HotelController {
           bookings: e.Bookings,
         };
       });
-
       return detailed;
     } catch (error) {
       return error;
