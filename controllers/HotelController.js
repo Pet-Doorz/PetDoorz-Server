@@ -142,7 +142,7 @@ class HotelController {
     }
     let tglKeluarDate;
     if (tglKeluar) {
-      tglKeluar = new Date(
+      tglKeluarDate = new Date(
         `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
       );
     }
@@ -216,6 +216,7 @@ class HotelController {
               name: hotel.name,
               location: hotel.location,
               logoHotel: hotel.logoHotel,
+              reviews: hotel.reviews,
               distance: perDistance,
               detailRoom: Roomdata,
             };
