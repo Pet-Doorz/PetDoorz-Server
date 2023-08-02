@@ -67,12 +67,13 @@ class HotelController {
         phoneNumber,
       } = req.body;
 
+      const geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
+
       const newHotel = await Hotel.create({
         email,
         password,
         name,
-        location,
-        balance,
+        location: geoLocation,
         logoHotel,
         address,
         phoneNumber,
@@ -394,13 +395,13 @@ class HotelController {
         address,
         phoneNumber,
       } = req.body;
+      const geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
       const instanceHotel = await Hotel.findByPk(id);
-      if (!instanceHotel) throw { name: "NOTFOUND" };
       await instanceHotel.update({
         email,
         password,
         name,
-        location,
+        location: geoLocation,
         logoHotel,
         address,
         phoneNumber,
@@ -413,14 +414,7 @@ class HotelController {
   //---------------------SERVICES----------------------
   static async getServices(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
+      let { id: HotelId } = req.hotel
 
       const service = await Service.findAll({
         where: { HotelId },
@@ -437,16 +431,9 @@ class HotelController {
 
   static async addService(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
+      let { id: HotelId } = req.hotel
 
       const { name, price } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const newService = await Service.create({ name, price, HotelId });
 
@@ -458,17 +445,10 @@ class HotelController {
 
   static async updateService(req, res, next) {
     try {
-      const { id } = req.params;
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
+      const { id } = req.params
+      let { id: HotelId } = req.hotel
 
       const { name, price } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const service = await Service.findByPk(id);
 
@@ -489,15 +469,8 @@ class HotelController {
 
   static async deleteService(req, res, next) {
     try {
-      const { id } = req.params;
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
+      const { id } = req.params
+      let { id: HotelId } = req.hotel
 
       const deletedService = await Service.destroy({ where: { id } });
 
@@ -514,14 +487,7 @@ class HotelController {
   //---------------------ROOM-------------------------
   static async getRooms(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
+      let { id: HotelId } = req.hotel
 
       const rooms = await Room.findAll({
         where: { HotelId },
@@ -536,16 +502,9 @@ class HotelController {
 
   static async addRoom(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
+      let { id: HotelId } = req.hotel
 
       const { name, capacity, price, description, imageUrl } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const newRoom = await Room.create({
         name,
@@ -564,17 +523,10 @@ class HotelController {
 
   static async updateRoom(req, res, next) {
     try {
-      const { id } = req.params;
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
+      const { id } = req.params
+      let { id: HotelId } = req.hotel
 
       const { name, capacity, price, description, imageUrl } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const room = await Room.findByPk(id);
 
@@ -595,15 +547,8 @@ class HotelController {
 
   static async deleteRoom(req, res, next) {
     try {
-      const { id } = req.params;
-      let { id: HotelId } = req.hotel;
-      if (!HotelId) {
-        HotelId = req.params.HotelId;
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
+      const { id } = req.params
+      let { id: HotelId } = req.hotel
 
       const deletedRoom = await Room.destroy({ where: { id } });
 

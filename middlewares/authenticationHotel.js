@@ -5,7 +5,7 @@ async function authenticationHotel(req, res, next) {
   try {
     const { access_token } = req.headers;
     const { id, email } = jwtVerify(access_token);
-
+    
     const hotel = await Hotel.findOne({
       where: {
         id,

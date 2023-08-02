@@ -113,7 +113,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Balance is required"
           },
           min: {
-            args: 0,
+            args: 0-Number.MIN_VALUE,
             balance: "Balance must be greater than or equal to 0"
           }
         }

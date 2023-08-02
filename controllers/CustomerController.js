@@ -24,7 +24,7 @@ class CustomerController {
       });
 
       if (!instanceCustomer) throw { name: `InvalidEmailPassword` };
-      const isValid = bcrypt.compareSync(password, instanceCustomer.password);
+      const isValid = decrypt(password, instanceCustomer.password);
 
       if (!isValid) {
         throw { name: "InvalidEmailPassword" };

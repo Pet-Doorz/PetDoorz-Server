@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { encrypt } = require('../helpers/password')
 const app = require('../app')
-const { Customer, sequelize } = require('../models')
+const { Customer, sequelize, TopUp } = require('../models')
 let access_token;
 let false_access_token = 'masHardimdanMasPatra'
 
@@ -11,6 +11,7 @@ beforeAll(async () => {
         password: encrypt('qwerty'),
         fullName: 'Test Silalahi',
         phoneNumber: '08972828282',
+        balance: 20000000,
         createdAt: new Date(),
         updatedAt: new Date()
     }]);
@@ -240,7 +241,7 @@ describe('ENDPOINT /customers', () => {
     
         test('Login fail, invalid password', async () => {
             const bodyReq = {
-                email: 'register1@mail.com',
+                email: 'register@mail.com',
                 password: 'registertest'
             }
     
@@ -264,7 +265,7 @@ describe('ENDPOINT /customers', () => {
         })
 
         test('Fail fetch customer, wrong access_token', async () => {
-            const response = await request(app).get('/customers').set({false_access_token})
+            const response = await request(app).get('/customers').set({access_token: false_access_token})
             expect(response.status).toBe(401)
             expect(response.body).toHaveProperty('message', 'Invalid token')
         })
@@ -296,7 +297,7 @@ describe('ENDPOINT /customers', () => {
                 phoneNumber: '08123456'
             }
 
-            const response = await request(app).put('/customers').send(bodyReq).set({false_access_token})
+            const response = await request(app).put('/customers').send(bodyReq).set({access_token: false_access_token})
             expect(response.status).toBe(401)
             expect(response.body).toHaveProperty('message', 'Invalid token')
         })
@@ -322,7 +323,7 @@ describe('ENDPOINT /customers', () => {
         })
 
         test('Fail fetch chat histories, invalid access_token', async () => {
-            const response = await request(app).get('/customers/chats/1').set({false_access_token})
+            const response = await request(app).get('/customers/chats/1').set({access_token: false_access_token})
             expect(response.status).toBe(401)
             expect(response.body).toHaveProperty('message', 'Invalid token')
         })
@@ -351,7 +352,7 @@ describe('ENDPOINT /customers', () => {
                 total: 20000
             }
 
-            const response = await request(app).post('/customers/generate-midtrans-token').send(bodyReq).set({false_access_token})
+            const response = await request(app).post('/customers/generate-midtrans-token').send(bodyReq).set({access_token: false_access_token})
             expect(response.status).toBe(401)
             expect(response.body).toHaveProperty('message', 'Invalid token')
         })
