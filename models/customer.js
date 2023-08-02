@@ -92,10 +92,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Customer',
   });
 
-  Customer.addHook("beforeUpdate", async (customer) => {
-    customer.password = encrypt(customer.password);
-  });
-
   Customer.addHook("beforeCreate", async (customer) => {
     customer.password = encrypt(customer.password);
   });

@@ -347,13 +347,6 @@ class HotelController {
   static async getServices(req, res, next) {
     try {
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const service = await Service.findAll({
         where: { HotelId },
@@ -371,15 +364,8 @@ class HotelController {
   static async addService(req, res, next) {
     try {
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
 
       const { name, price } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const newService = await Service.create({ name, price, HotelId });
 
@@ -393,15 +379,8 @@ class HotelController {
     try {
       const { id } = req.params
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
 
       const { name, price } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const service = await Service.findByPk(id);
 
@@ -424,13 +403,6 @@ class HotelController {
     try {
       const { id } = req.params
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const deletedService = await Service.destroy({ where: { id } });
 
@@ -448,13 +420,6 @@ class HotelController {
   static async getRooms(req, res, next) {
     try {
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const rooms = await Room.findAll({
         where: { HotelId },
@@ -470,15 +435,8 @@ class HotelController {
   static async addRoom(req, res, next) {
     try {
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
 
       const { name, capacity, price, description, imageUrl } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const newRoom = await Room.create({
         name,
@@ -499,15 +457,8 @@ class HotelController {
     try {
       const { id } = req.params
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
 
       const { name, capacity, price, description, imageUrl } = req.body;
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const room = await Room.findByPk(id);
 
@@ -530,13 +481,6 @@ class HotelController {
     try {
       const { id } = req.params
       let { id: HotelId } = req.hotel
-      if (!HotelId) {
-         HotelId  = req.params.HotelId
-      }
-
-      const hotel = await Hotel.findByPk(HotelId);
-
-      if (!hotel) throw { name: "NOTFOUND" };
 
       const deletedRoom = await Room.destroy({ where: { id } });
 

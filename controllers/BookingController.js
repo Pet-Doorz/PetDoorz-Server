@@ -41,10 +41,9 @@ class BookingController {
         try {
             const { id } = req.params
             const { petImage } = req.body
-
+            
             if (!petImage) throw { name: "NullPetImage" }            
             await Booking.update({ petImage, status: "process" }, { where: { id } })
-
             res.status(200).json({ message: `Booking #${id} status updated to 'process'` })
         } catch (error) {
             next(error)
