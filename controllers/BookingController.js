@@ -1,4 +1,4 @@
-const { Booking, BookingService, Customer, Hotel, sequelize } = require("../models")
+const { Room, Booking, BookingService, Customer, Hotel, sequelize } = require("../models")
 
 class BookingController {
     static async createBooking(req, res, next) {
@@ -51,11 +51,20 @@ class BookingController {
     }
 
     static async updateStatusToDone(req, res, next) {
+        const transaction = await sequelize.transaction()
         try {
             const { id } = req.params
-            await Booking.update({ status: "done" }, { where: { id } })
+            
+            const booking = await Booking.findByPk(id)
+            const data = await booking.update({ status: "done" }, { transaction })
+            const room = await Room.findByPk(data.RoomId, { include: Hotel, transaction  })
+            await Hotel.update({ balance: room.Hotel.balance + data.grandTotal}, { where: { id: room.Hotel.id }, transaction  })
+            
+            await transaction.commit()
+
             res.status(200).json({ message: `Booking #${id} status updated to 'done'` })
         } catch (error) {
+            await transaction.rollback()
             next(error)
         }
     }

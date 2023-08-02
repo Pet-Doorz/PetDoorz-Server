@@ -9,7 +9,8 @@ const {
   Image,
   Sequelize,
   Customer,
-  BookingService
+  BookingService,
+  sequelize
 } = require("../models");
 const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -54,17 +55,18 @@ class HotelController {
   }
 
   static async register(req, res, next) {
-    const date = new Date();
+    const transaction = await sequelize.transaction()
     try {
       const {
         email,
         password,
         name,
         location,
-        balance,
         logoHotel,
         address,
         phoneNumber,
+        description,
+        images
       } = req.body;
 
       const geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
@@ -77,13 +79,25 @@ class HotelController {
         logoHotel,
         address,
         phoneNumber,
-      });
+        description
+      }, { transaction });
+
+      const imagesArr = images.map(e => {
+        return {
+          imageUrl: e,
+          HotelId: newHotel.id
+        }
+      })
+
+      await Image.bulkCreate(imagesArr, { transaction })
+      await transaction.commit()
 
       res.status(201).json({
         status: "Created",
         message: "New Hotel has been added",
       });
     } catch (error) {
+      await transaction.rollback()
       next(error);
     }
   }
@@ -384,6 +398,7 @@ class HotelController {
   }
 
   static async update(req, res, next) {
+    const transaction = await sequelize.transaction()
     try {
       const { id } = req.hotel;
       const {
@@ -406,8 +421,12 @@ class HotelController {
         address,
         phoneNumber,
       });
+
+      await transaction.commit()
+
       res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` });
     } catch (error) {
+      await transaction.rollback()
       next(error);
     }
   }
