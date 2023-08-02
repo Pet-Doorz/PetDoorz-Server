@@ -240,8 +240,9 @@ class CustomerController {
 
   static async getHotelEmail(req, res, next) {
     try {
+      console.log(req.params);
       const { access_token } = req.headers;
-      const { id } = req.body;
+      const { id } = req.params;
       const instanceHotel = await Hotel.findByPk(id, {
         attributes: ["id", "email"],
       });
