@@ -54,7 +54,10 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Customer ID is required"
         }
       }
-    }
+    },
+    bookingId: {
+      type: DataTypes.INTEGER
+    },
   }, {
     sequelize,
     modelName: 'Review',
