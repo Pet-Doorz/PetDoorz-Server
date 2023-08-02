@@ -76,7 +76,7 @@ class CustomerController {
             model: Booking,
             include: [
               { model: Room,
-                include: { model: Hotel, attributes: ["name"]}
+                include: { model: Hotel, attributes: ["name", "email", "id"]}
               },
               {
                 model: BookingService,

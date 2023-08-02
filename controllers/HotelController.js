@@ -9,6 +9,7 @@ const {
   Image,
   Sequelize,
   Customer,
+  BookingService
 } = require("../models");
 const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -97,7 +98,17 @@ class HotelController {
           Review,
           {
             model: Room,
-            include: Booking,
+            include: {
+              model: Booking,
+              include: [{
+                model: Customer,
+                attributes: ["id", "fullName", "email"]
+              },
+              {
+                model: BookingService,
+                include: Service
+              }]
+            },
           },
           Image,
         ],

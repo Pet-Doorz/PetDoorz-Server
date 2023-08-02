@@ -148,10 +148,5 @@ module.exports = (sequelize, DataTypes) => {
     hotel.password = encrypt(hotel.password);
   });
 
-  // Hotel.addHook("beforeUpdate", async (hotel) => {
-  //   hotel.status = "active";
-  //   hotel.password = encrypt(hotel.password);
-  // });
-
   return Hotel;
 };
