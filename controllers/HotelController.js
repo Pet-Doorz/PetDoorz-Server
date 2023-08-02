@@ -96,7 +96,13 @@ class HotelController {
           Review,
           {
             model: Room,
-            include: Booking,
+            include: {
+              model: Booking,
+              include: {
+                model: Customer,
+                attributes: ["id", "fullName", "email"]
+              }
+            },
           },
           Image,
         ],
