@@ -1,6 +1,6 @@
 const { Customer, Booking, Review, TopUp, Room, Hotel, BookingService, Service, Sequelize } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
-const { decrypt } = require("../helpers/password");
+const { decrypt, encrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
 const midtransClient = require("midtrans-client");
 const getChatHistory = require("../helpers/thirdPartyRequest");
@@ -101,7 +101,7 @@ class CustomerController {
       const targetCustomer = await Customer.findByPk(id);
       if (!targetCustomer) throw { name: "NOTFOUND" };
 
-      await targetCustomer.update({ fullName, password, phoneNumber });
+      await targetCustomer.update({ fullName, password: encrypt(password), phoneNumber });
 
       res.status(200).json({ message: `Customer #${id} updated` });
     } catch (error) {

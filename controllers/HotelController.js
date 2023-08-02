@@ -1,5 +1,5 @@
 const { jwtSign } = require("../helpers/jwt");
-const { decrypt } = require("../helpers/password");
+const { decrypt, encrypt } = require("../helpers/password");
 const {
   Hotel,
   Room,
@@ -409,19 +409,34 @@ class HotelController {
         logoHotel,
         address,
         phoneNumber,
+        description,
+        images
       } = req.body;
-      const geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
+
+      let geoLocation;
+      if (location) {
+        geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
+      }
       const instanceHotel = await Hotel.findByPk(id);
       await instanceHotel.update({
         email,
-        password,
+        password: encrypt(password),
         name,
         location: geoLocation,
         logoHotel,
         address,
         phoneNumber,
-      });
+        description
+      }, { transaction });
 
+      await Image.destroy({ where: { HotelId: id }, transaction})
+      const imagesArr = images.map(e => {
+        return {
+          imageUrl: e,
+          HotelId: id
+        }
+      })
+      await Image.bulkCreate(imagesArr, { transaction })
       await transaction.commit()
 
       res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` });
