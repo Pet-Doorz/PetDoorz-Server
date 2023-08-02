@@ -1,4 +1,4 @@
-const { Customer, Booking, Review, Sequelize } = require("../models");
+const { Customer, Booking, Review, TopUp, Room, Hotel, BookingService, Service, Sequelize } = require("../models");
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
@@ -12,6 +12,8 @@ class CustomerController {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
+
+      console.log(email, password, "MASUK");
       if (!email) throw { name: "NullEmail" };
       if (!password) throw { name: "NullPassword" };
 
@@ -37,6 +39,7 @@ class CustomerController {
         res.status(200).json({
           access_token: token,
           fullName: instanceCustomer.name,
+          email: instanceCustomer.email,
         });
       }
     } catch (error) {
@@ -68,7 +71,20 @@ class CustomerController {
     try {
       const { id } = req.customer || req.params;
       const data = await Customer.findByPk(id, {
-        include: [Booking, Review],
+        include: [Review, 
+          {
+            model: Booking,
+            include: [
+              { model: Room,
+                include: { model: Hotel, attributes: ["name"]}
+              },
+              {
+                model: BookingService,
+                include: Service
+              }
+            ]
+          }
+        ],
         attributes: { exclude: ["createdAt", "updatedAt", "password"] },
       });
       if (!data) throw { name: "NOTFOUND" };
@@ -97,9 +113,15 @@ class CustomerController {
     try {
       // dapetin grand total dulu
       const { total } = req.body; // harus dapet total price dari client
+      const order_id = "TX" + Math.floor(Math.random() * 90000)
 
       // dapetin email customer, dapetin customer dari authentication customer
       const customer = await Customer.findByPk(req.customer.id);
+      const topUp = await TopUp.create({
+        CustomerId: customer.id,
+        orderId: order_id,
+        total
+      })
 
       // ini buat create snap paymentnya, ENV jangan lupa
       let snap = new midtransClient.Snap({
@@ -110,7 +132,7 @@ class CustomerController {
       // parameter yang dibutuhin midtrans
       let parameter = {
         transaction_details: {
-          order_id: "TX" + Math.floor(Math.random() * 90000), // order ID harus unique, jadi gua giniin aja ya
+          order_id, // order ID harus unique, jadi gua giniin aja ya
           gross_amount: total,
         },
         credit_card: {
@@ -130,15 +152,22 @@ class CustomerController {
 
   static async addBalanceCustomer(req, res, next) {
     try {
-      // const { id } = req.params;
-      // const { total } = req.body;
+      const { order_id } = req.body;
 
-      // const customer = await Customer.findByPk(id);
+      const order = await TopUp.findOne({
+        where: {
+          orderId : order_id
+        }
+      })
 
-      // await customer.update({
-      //   balance: customer.balance + +total, // total dari req.body bentuknye string, kudu diubah duls
-      // });
-      console.log(req.body)
+      console.log(order)
+
+      const customer = await Customer.findByPk(order.CustomerId);
+
+      await customer.update({
+        balance: customer.balance + order.total, // total dari req.body bentuknye string, kudu diubah duls
+      });
+      
       res.status(200).json({ message: "Success add balance" });
     } catch (error) {
       next(error);

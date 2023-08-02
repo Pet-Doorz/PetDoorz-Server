@@ -19,8 +19,8 @@ router.post(
   authenticationCustomer,
   CustomerController.generateMidtrans
 );
-router.patch(
-  "/",
+router.post(
+  "/add-balance",
   CustomerController.addBalanceCustomer
 );
 

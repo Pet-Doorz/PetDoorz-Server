@@ -6,15 +6,16 @@ const {
   Booking,
   Service,
   Review,
+  Image,
   Sequelize,
+  Customer,
 } = require("../models");
 const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const calculateDistance = require("../helpers/calculateDistance");
 const getChatHistory = require("../helpers/thirdPartyRequest");
-const uuid = require('uuid');
+const uuid = require("uuid");
 const crypto = require("crypto");
-
 
 class HotelController {
   static async login(req, res, next) {
@@ -54,7 +55,16 @@ class HotelController {
   static async register(req, res, next) {
     const date = new Date();
     try {
-      const { email, password, name, location, balance, logoHotel } = req.body;
+      const {
+        email,
+        password,
+        name,
+        location,
+        balance,
+        logoHotel,
+        address,
+        phoneNumber,
+      } = req.body;
 
       const newHotel = await Hotel.create({
         email,
@@ -63,6 +73,8 @@ class HotelController {
         location,
         balance,
         logoHotel,
+        address,
+        phoneNumber,
       });
 
       res.status(201).json({
@@ -76,7 +88,7 @@ class HotelController {
 
   static async hotelByAuth(req, res, next) {
     try {
-      let { id } = req.hotel
+      let { id } = req.hotel;
 
       const data = await Hotel.findByPk(id, {
         include: [
@@ -84,21 +96,23 @@ class HotelController {
           Review,
           {
             model: Room,
-            include: Booking
-          }
-        ]
-      })
-      if (!data) throw { name: "NOTFOUND" }
-      
-      res.status(200).json(data)
+            include: Booking,
+          },
+          Image,
+        ],
+        attributes: { exclude: ["Password"] },
+      });
+      if (!data) throw { name: "NOTFOUND" };
+
+      res.status(200).json(data);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   static async hotelById(req, res, next) {
     try {
-      let { id } = req.params
+      let { id } = req.params;
 
       const data = await Hotel.findByPk(id, {
         include: [
@@ -106,15 +120,17 @@ class HotelController {
           Review,
           {
             model: Room,
-            include: Booking
-          }
-        ]
-      })
-      if (!data) throw { name: "NOTFOUND" }
-      
-      res.status(200).json(data)
+            include: Booking,
+          },
+          Image,
+        ],
+        attributes: { exclude: ["Password"] },
+      });
+      if (!data) throw { name: "NOTFOUND" };
+
+      res.status(200).json(data);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
@@ -127,32 +143,53 @@ class HotelController {
     const tglMasuk = req.query.checkin; //DD/MM/YYYY
     const tglKeluar = req.query.checkout; //DD/MM/YYYY
     const totalPet = req.query.totalPet;
-    const tglMasukDate = new Date(
-      `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
-    );
-    const tglKeluarDate = new Date(
-      `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
-    );
+    let tglMasukDate;
+    if (tglMasuk) {
+      tglMasukDate = new Date(
+        `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
+    }
+    let tglKeluarDate;
+    if (tglKeluar) {
+      tglKeluarDate = new Date(
+        `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
+    }
 
     try {
+      console.log(req.query);
       if (
         !req.query.long ||
         !req.query.lat ||
         !req.query.distance ||
         !req.query.checkin ||
         !req.query.checkout ||
-        !req.query.totalPet
+        !req.query.totalPet ||
+        !req.query
       ) {
         const instanceHotels = await Hotel.findAll({
           include: [
             { model: Room, include: [{ model: Booking }] },
             { model: Service },
-            { model: Review },
+            {
+              model: Review,
+              include: {
+                model: Customer,
+                attributes: ["fullName"],
+              },
+            },
+            { model: Image },
           ],
+          attributes: { exclude: ["password"] },
         });
         return res.status(200).json(instanceHotels);
       }
-
+      const tglMasukDate = new Date(
+        `${tglMasuk.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
+      const tglKeluarDate = new Date(
+        `${tglKeluar.split("/").reverse().join("-")}T00:00:00.000Z`
+      );
       const nearestHotels = await Hotel.findAll({
         include: [
           {
@@ -167,7 +204,9 @@ class HotelController {
           },
           { model: Service },
           { model: Review },
+          { model: Image },
         ],
+        attributes: { exclude: ["password"] },
         where: Sequelize.where(
           Sequelize.fn(
             "ST_DWithin",
@@ -193,12 +232,16 @@ class HotelController {
               hotel.location.coordinates,
               [+req.query.long, +req.query.lat]
             );
+
             return {
               id: hotel.id,
               email: hotel.email,
               name: hotel.name,
               location: hotel.location,
               logoHotel: hotel.logoHotel,
+              services: hotel.Services,
+              reviews: hotel.Reviews,
+              images: hotel.Images,
               distance: perDistance,
               detailRoom: Roomdata,
             };
@@ -211,9 +254,7 @@ class HotelController {
       const hotelsWithAvailableRooms = dataHotels.filter((hotel) => {
         return (
           hotel.detailRoom.length > 0 &&
-          hotel.detailRoom.every(
-            (room) => room.currentCapacity >= 0 && room.currentCapacity > 0
-          )
+          hotel.detailRoom.every((room) => room.currentCapacity > 0)
         );
       });
 
@@ -270,6 +311,7 @@ class HotelController {
           },
           { model: Service },
           { model: Review },
+          { model: Image },
         ],
       });
       let currentTotalPet = 0;
@@ -278,38 +320,42 @@ class HotelController {
           currentTotalPet += e.totalPet;
         });
         return {
+          id: e.id,
           name: e.name,
           price: e.price,
           currentCapacity:
             e.capacity - e.Bookings.length - totalPet - currentTotalPet,
           bookings: e.Bookings,
+          description: e.description,
+          imageUrl: e.imageUrl,
         };
       });
-
       return detailed;
     } catch (error) {
       return error;
     }
   }
-  
+
   static async changeStatus(req, res, next) {
     try {
-      const { id } = req.hotel
+      const { id } = req.hotel;
 
-      const data = await Hotel.findByPk(id)
-      if (!data) throw { name: "NOTFOUND" }
+      const data = await Hotel.findByPk(id);
+      if (!data) throw { name: "NOTFOUND" };
 
-      let newStatus = ""
+      let newStatus = "";
       if (data.status === "active") {
-        newStatus = "inactive"
+        newStatus = "inactive";
       } else {
-        newStatus = "active"
+        newStatus = "active";
       }
-      await data.update({ status: newStatus }, { hooks: false })
+      await data.update({ status: newStatus }, { hooks: false });
 
-      res.status(200).json({ message: `Hotel #${id} status updated into '${newStatus}'`})
+      res
+        .status(200)
+        .json({ message: `Hotel #${id} status updated into '${newStatus}'` });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
@@ -328,7 +374,15 @@ class HotelController {
   static async update(req, res, next) {
     try {
       const { id } = req.hotel;
-      const { email, password, name, location, logoHotel } = req.body;
+      const {
+        email,
+        password,
+        name,
+        location,
+        logoHotel,
+        address,
+        phoneNumber,
+      } = req.body;
       const instanceHotel = await Hotel.findByPk(id);
       if (!instanceHotel) throw { name: "NOTFOUND" };
       await instanceHotel.update({
@@ -337,6 +391,8 @@ class HotelController {
         name,
         location,
         logoHotel,
+        address,
+        phoneNumber,
       });
       res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` });
     } catch (error) {
@@ -494,7 +550,6 @@ class HotelController {
     }
   }
 
-
   // -------------- CHAT -----------------
   static async getChatHistory(req, res, next) {
     try {
@@ -513,17 +568,20 @@ class HotelController {
     try {
       const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
       var token = req.query.token || uuid.v4();
-      var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
+      var expire = req.query.expire || parseInt(Date.now() / 1000) + 2400;
       var privateAPIKey = `${privateKey}`;
-      var signature = crypto.createHmac('sha1', privateAPIKey).update(token+expire).digest('hex');
+      var signature = crypto
+        .createHmac("sha1", privateAPIKey)
+        .update(token + expire)
+        .digest("hex");
 
       res.status(200).json({
-        token : token,
-        expire : expire,
-        signature : signature
-      })
+        token: token,
+        expire: expire,
+        signature: signature,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 }

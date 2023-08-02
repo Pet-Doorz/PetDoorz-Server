@@ -74,6 +74,33 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
+      description: {
+        type: DataTypes.TEXT,
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Address is required"
+          },
+          notNull: {
+            msg: "Address is required"
+          }
+        }
+      },
+      phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "Phone number is required"
+          },
+          notNull: {
+            msg: "Phone number is required"
+          }
+        }
+      },
       balance: {
         type: DataTypes.INTEGER,
         allowNull: false,
