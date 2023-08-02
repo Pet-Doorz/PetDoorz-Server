@@ -1,10 +1,20 @@
-const { Customer, Booking, Review, TopUp, Room, Hotel, BookingService, Service, Sequelize } = require("../models");
+const {
+  Customer,
+  Booking,
+  Review,
+  TopUp,
+  Room,
+  Hotel,
+  BookingService,
+  Service,
+  Sequelize,
+} = require("../models");
 const { jwtSign } = require("../helpers/jwt");
 const { decrypt, encrypt } = require("../helpers/password");
 const bcrypt = require("bcryptjs");
 const midtransClient = require("midtrans-client");
 const getChatHistory = require("../helpers/thirdPartyRequest");
-const uuid = require('uuid');
+const uuid = require("uuid");
 const crypto = require("crypto");
 
 class CustomerController {
@@ -71,19 +81,21 @@ class CustomerController {
     try {
       const { id } = req.customer || req.params;
       const data = await Customer.findByPk(id, {
-        include: [Review, 
+        include: [
+          Review,
           {
             model: Booking,
             include: [
-              { model: Room,
-                include: { model: Hotel, attributes: ["name", "email", "id"]}
+              {
+                model: Room,
+                include: { model: Hotel, attributes: ["name", "email", "id"] },
               },
               {
                 model: BookingService,
-                include: Service
-              }
-            ]
-          }
+                include: Service,
+              },
+            ],
+          },
         ],
         attributes: { exclude: ["createdAt", "updatedAt", "password"] },
       });
@@ -101,7 +113,11 @@ class CustomerController {
       const targetCustomer = await Customer.findByPk(id);
       if (!targetCustomer) throw { name: "NOTFOUND" };
 
-      await targetCustomer.update({ fullName, password: encrypt(password), phoneNumber });
+      await targetCustomer.update({
+        fullName,
+        password: encrypt(password),
+        phoneNumber,
+      });
 
       res.status(200).json({ message: `Customer #${id} updated` });
     } catch (error) {
@@ -113,15 +129,15 @@ class CustomerController {
     try {
       // dapetin grand total dulu
       const { total } = req.body; // harus dapet total price dari client
-      const order_id = "TX" + Math.floor(Math.random() * 90000)
+      const order_id = "TX" + Math.floor(Math.random() * 90000);
 
       // dapetin email customer, dapetin customer dari authentication customer
       const customer = await Customer.findByPk(req.customer.id);
       const topUp = await TopUp.create({
         CustomerId: customer.id,
         orderId: order_id,
-        total
-      })
+        total,
+      });
 
       // ini buat create snap paymentnya, ENV jangan lupa
       let snap = new midtransClient.Snap({
@@ -156,18 +172,18 @@ class CustomerController {
 
       const order = await TopUp.findOne({
         where: {
-          orderId : order_id
-        }
-      })
+          orderId: order_id,
+        },
+      });
 
-      console.log(order)
+      console.log(order);
 
       const customer = await Customer.findByPk(order.CustomerId);
 
       await customer.update({
         balance: customer.balance + order.total, // total dari req.body bentuknye string, kudu diubah duls
       });
-      
+
       res.status(200).json({ message: "Success add balance" });
     } catch (error) {
       next(error);
@@ -188,15 +204,15 @@ class CustomerController {
 
   static async getCustomerByAccessToken(req, res, next) {
     try {
-      const { id } = req.customer
+      const { id } = req.customer;
       const data = await Customer.findByPk(id, {
         include: [Booking, Review],
-        attributes: { exclude: ['createdAt', 'updatedAt', "password"] }
-      })
-      if (!data) throw { name: "NOTFOUND" }
-      res.status(200).json(data)
+        attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+      });
+      if (!data) throw { name: "NOTFOUND" };
+      res.status(200).json(data);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
@@ -205,17 +221,34 @@ class CustomerController {
     try {
       const privateKey = process.env.IMAGEKIT_PRIVATE_KEY;
       var token = req.query.token || uuid.v4();
-      var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
+      var expire = req.query.expire || parseInt(Date.now() / 1000) + 2400;
       var privateAPIKey = `${privateKey}`;
-      var signature = crypto.createHmac('sha1', privateAPIKey).update(token+expire).digest('hex');
+      var signature = crypto
+        .createHmac("sha1", privateAPIKey)
+        .update(token + expire)
+        .digest("hex");
 
       res.status(200).json({
-        token : token,
-        expire : expire,
-        signature : signature
-      })
+        token: token,
+        expire: expire,
+        signature: signature,
+      });
     } catch (error) {
-      next(error)
+      next(error);
+    }
+  }
+
+  static async getHotelEmail(req, res, next) {
+    try {
+      const { access_token } = req.headers;
+      const { id } = req.body;
+      const instanceHotel = await Hotel.findByPk(id, {
+        attributes: ["id", "email"],
+      });
+
+      res.status(200).json(instanceHotel);
+    } catch (error) {
+      next(error);
     }
   }
 }

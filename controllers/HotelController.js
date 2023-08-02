@@ -225,7 +225,7 @@ class HotelController {
         include: [
           {
             model: Room,
-            attributes: ["HotelId", "capacity", "price"],
+            attributes: ["HotelId", "capacity", "price", "description"],
             include: [
               {
                 model: Booking,
