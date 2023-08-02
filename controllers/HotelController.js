@@ -278,6 +278,7 @@ class HotelController {
               name: hotel.name,
               location: hotel.location,
               logoHotel: hotel.logoHotel,
+              description: hotel.description,
               services: hotel.Services,
               reviews: hotel.Reviews,
               images: hotel.Images,
