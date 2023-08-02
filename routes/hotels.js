@@ -4,7 +4,7 @@ const HotelController = require("../controllers/HotelController");
 const authenticationHotel = require("../middlewares/authenticationHotel");
 
 router.get("/", HotelController.findNearestHotel);
-router.put("/:id", authenticationHotel, HotelController.update);
+router.put("/", authenticationHotel, HotelController.update);
 router.post("/login", HotelController.login);
 router.post("/register", HotelController.register);
 router.get("/detail", authenticationHotel, HotelController.hotelByAuth);

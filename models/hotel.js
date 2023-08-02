@@ -113,7 +113,7 @@ module.exports = (sequelize, DataTypes) => {
             msg: "Balance is required"
           },
           min: {
-            args: 0,
+            args: 0-Number.MIN_VALUE,
             balance: "Balance must be greater than or equal to 0"
           }
         }
@@ -148,10 +148,10 @@ module.exports = (sequelize, DataTypes) => {
     hotel.password = encrypt(hotel.password);
   });
 
-  Hotel.addHook("beforeUpdate", async (hotel) => {
-    hotel.status = "active";
-    hotel.password = encrypt(hotel.password);
-  });
+  // Hotel.addHook("beforeUpdate", async (hotel) => {
+  //   hotel.status = "active";
+  //   hotel.password = encrypt(hotel.password);
+  // });
 
   return Hotel;
 };

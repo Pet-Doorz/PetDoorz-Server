@@ -2,86 +2,102 @@ const request = require('supertest')
 const app = require('../app')
 const { Booking, BookingService, Customer, sequelize } = require("../models")
 const { encrypt } = require('../helpers/password')
+const { jwtSign } = require('../helpers/jwt')
 let access_token;
 let hotel_access_token;
 let false_access_token = 'masHardimdanMasPatra'
 
 beforeAll(async () => {
-    await sequelize.queryInterface.bulkInsert('Customers', [{
-        email: 'test@mail.com',
-        password: encrypt('qwerty'),
-        fullName: 'Test Silalahi',
-        phoneNumber: '08972828282',
-        balance: 1000000,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }]);
+    try {
 
-    await sequelize.queryInterface.bulkInsert('Hotels', [{
-        email: 'yahoooooo@mail.com',
-        password: encrypt('qwerty'),
-        name: 'Hore',
-        location: sequelize.fn(
-            'ST_GeomFromText',
-            'POINT(-6.147642181387086 106.71119003020036)'
-        ),
-        balance: 85000,
-        logoHotel: 'imageUrl',
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }]);
-
-    await sequelize.queryInterface.bulkInsert('Services', [{
-        name: 'Hore',
-        HotelId: 1,
-        price: 85000,
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }]);
-
-    await sequelize.queryInterface.bulkInsert('Rooms', [{
-        HotelId: 1,
-        name: 'Hore',
-        capacity: 5,
-        price: 85000,
-        description: 'test',
-        imageUrl: 'imageUrl',
-        createdAt: new Date(),
-        updatedAt: new Date()
-    }]);
-
-    await sequelize.queryInterface.bulkInsert('Bookings', [
-        {
-            CustomerId: 1,
-            RoomId: 1,
-            checkIn: new Date(),
-            checkOut: new Date(),
-            totalPet: 1,
-            grandTotal: 20000,
-            petImage: 'petImage',
+        await sequelize.queryInterface.bulkInsert('Customers', [{
+            email: 'test@mail.com',
+            password: encrypt('qwerty'),
+            fullName: 'Test Silalahi',
+            phoneNumber: '08972828282',
+            balance: 1000000,
             createdAt: new Date(),
             updatedAt: new Date()
-        },
-        {
-            CustomerId: 1,
-            RoomId: 1,
-            checkIn: new Date(),
-            checkOut: new Date(),
-            totalPet: 2,
-            grandTotal: 20000,
-            petImage: 'petImage',
+        }]);
+    
+        await sequelize.queryInterface.bulkInsert('Hotels', [{
+            email: 'yahoooooo@mail.com',
+            password: encrypt('qwerty'),
+            name: 'Hore',
+            location: sequelize.fn(
+                'ST_GeomFromText',
+                'POINT(-6.147642181387086 106.71119003020036)'
+            ),
+            balance: 85000,
+            address: 'ini addres hotel',
+            logoHotel: 'imageUrl',
+            phoneNumber: '080808',
             createdAt: new Date(),
             updatedAt: new Date()
-        },
-    ]);
-
-    const response = await request(app).post('/customers/login').send({ email: 'test@mail.com', password: 'qwerty' })
-    access_token = response.body.access_token
-    const response2 = await request(app).post('/hotels/login').send({
-        email: 'yahoooooo@mail.com',
-        password: 'qwerty'
-    })
-    hotel_access_token = response2.body.access_token
+        }]);
+    
+        await sequelize.queryInterface.bulkInsert('Services', [{
+            name: 'Hore',
+            HotelId: 1,
+            price: 85000,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }]);
+    
+        await sequelize.queryInterface.bulkInsert('Rooms', [{
+            HotelId: 1,
+            name: 'Hore',
+            capacity: 5,
+            price: 85000,
+            description: 'test',
+            imageUrl: 'imageUrl',
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }]);
+    
+        await sequelize.queryInterface.bulkInsert('Bookings', [
+            {
+                CustomerId: 1,
+                RoomId: 1,
+                checkIn: new Date(),
+                checkOut: new Date(),
+                totalPet: 1,
+                grandTotal: 20000,
+                petImage: 'petImage',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                CustomerId: 1,
+                RoomId: 1,
+                checkIn: new Date(),
+                checkOut: new Date(),
+                totalPet: 2,
+                grandTotal: 20000,
+                petImage: 'petImage',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+        ]);
+    
+        const payload = {
+            id: 1,
+            fullName: "Test Silalahi",
+            email: "test@mail.com", // saya tambahin, soalnya butuh email di authCustomer dan generate midtrans
+        };
+        // generate jwt token
+        access_token = jwtSign(payload);
+    
+        const payload2 = {
+            id: 1,
+            email: 'yahoooooo@mail.com',
+        };
+        // generate jwt token
+        hotel_access_token = jwtSign(payload2);
+    }
+    catch(error) {
+        console.log(error, `ERROR DARI SINI TEST @@@@@@@@@@@@@@@@@@@@@@@@@`);
+    }
 })
 
 
@@ -229,19 +245,19 @@ describe('ENDPOINT /bookings', () => {
 
     describe('PATCH /:id/done', () => {
         test('Successfully changing status into done !', async () => {
-            const response = await request(app).patch('/bookings/1/done').set({access_token})
+            const response = await request(app).patch('/bookings/1/done').set({ access_token })
             expect(response.status).toBe(200)
             expect(response.body).toHaveProperty('message', expect.any(String))
         })
 
         test('Fail changing status, status !== "process"', async () => {
-            const response = await request(app).patch('/bookings/2/done').set({access_token})
+            const response = await request(app).patch('/bookings/2/done').set({ access_token })
             expect(response.status).toBe(400)
             expect(response.body).toHaveProperty('message', expect.any(String))
         })
 
         test('Fail changing status, invalid token', async () => {
-            const response = await request(app).patch('/bookings/2/done').set({access_token: false_access_token})
+            const response = await request(app).patch('/bookings/2/done').set({ access_token: false_access_token })
             expect(response.status).toBe(401)
             expect(response.body).toHaveProperty('message', expect.any(String))
         })

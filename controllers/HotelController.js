@@ -66,12 +66,13 @@ class HotelController {
         phoneNumber,
       } = req.body;
 
+      const geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
+
       const newHotel = await Hotel.create({
         email,
         password,
         name,
-        location,
-        balance,
+        location: geoLocation,
         logoHotel,
         address,
         phoneNumber,
@@ -383,13 +384,13 @@ class HotelController {
         address,
         phoneNumber,
       } = req.body;
+      const geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
       const instanceHotel = await Hotel.findByPk(id);
-      if (!instanceHotel) throw { name: "NOTFOUND" };
       await instanceHotel.update({
         email,
         password,
         name,
-        location,
+        location: geoLocation,
         logoHotel,
         address,
         phoneNumber,

@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { encrypt } = require('../helpers/password')
 const app = require('../app')
-const { Customer, sequelize } = require('../models')
+const { Customer, sequelize, TopUp } = require('../models')
 let access_token;
 let false_access_token = 'masHardimdanMasPatra'
 
@@ -11,6 +11,7 @@ beforeAll(async () => {
         password: encrypt('qwerty'),
         fullName: 'Test Silalahi',
         phoneNumber: '08972828282',
+        balance: 20000000,
         createdAt: new Date(),
         updatedAt: new Date()
     }]);
