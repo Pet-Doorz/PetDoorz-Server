@@ -10,7 +10,7 @@ const {
   Sequelize,
   Customer,
   BookingService,
-  sequelize
+  sequelize,
 } = require("../models");
 const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -55,7 +55,7 @@ class HotelController {
   }
 
   static async register(req, res, next) {
-    const transaction = await sequelize.transaction()
+    const transaction = await sequelize.transaction();
     try {
       const {
         email,
@@ -66,38 +66,41 @@ class HotelController {
         address,
         phoneNumber,
         description,
-        images
+        images,
       } = req.body;
 
-      const geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
+      const geoLocation = Sequelize.fn("ST_GeomFromText", `POINT(${location})`);
 
-      const newHotel = await Hotel.create({
-        email,
-        password,
-        name,
-        location: geoLocation,
-        logoHotel,
-        address,
-        phoneNumber,
-        description
-      }, { transaction });
+      const newHotel = await Hotel.create(
+        {
+          email,
+          password,
+          name,
+          location: geoLocation,
+          logoHotel,
+          address,
+          phoneNumber,
+          description,
+        },
+        { transaction }
+      );
 
-      const imagesArr = images.map(e => {
+      const imagesArr = images.map((e) => {
         return {
           imageUrl: e,
-          HotelId: newHotel.id
-        }
-      })
+          HotelId: newHotel.id,
+        };
+      });
 
-      await Image.bulkCreate(imagesArr, { transaction })
-      await transaction.commit()
+      await Image.bulkCreate(imagesArr, { transaction });
+      await transaction.commit();
 
       res.status(201).json({
         status: "Created",
         message: "New Hotel has been added",
       });
     } catch (error) {
-      await transaction.rollback()
+      await transaction.rollback();
       next(error);
     }
   }
@@ -114,14 +117,16 @@ class HotelController {
             model: Room,
             include: {
               model: Booking,
-              include: [{
-                model: Customer,
-                attributes: ["id", "fullName", "email"]
-              },
-              {
-                model: BookingService,
-                include: Service
-              }]
+              include: [
+                {
+                  model: Customer,
+                  attributes: ["id", "fullName", "email"],
+                },
+                {
+                  model: BookingService,
+                  include: Service,
+                },
+              ],
             },
           },
           Image,
@@ -229,7 +234,15 @@ class HotelController {
             ],
           },
           { model: Service },
-          { model: Review },
+          {
+            model: Review,
+            include: [
+              {
+                model: Customer,
+                attributes: ["fullName"],
+              },
+            ],
+          },
           { model: Image },
         ],
         attributes: { exclude: ["password"] },
@@ -398,7 +411,7 @@ class HotelController {
   }
 
   static async update(req, res, next) {
-    const transaction = await sequelize.transaction()
+    const transaction = await sequelize.transaction();
     try {
       const { id } = req.hotel;
       const {
@@ -410,45 +423,48 @@ class HotelController {
         address,
         phoneNumber,
         description,
-        images
+        images,
       } = req.body;
 
       let geoLocation;
       if (location) {
-        geoLocation = Sequelize.fn('ST_GeomFromText', `POINT(${location})`)
+        geoLocation = Sequelize.fn("ST_GeomFromText", `POINT(${location})`);
       }
       const instanceHotel = await Hotel.findByPk(id);
-      await instanceHotel.update({
-        email,
-        password: encrypt(password),
-        name,
-        location: geoLocation,
-        logoHotel,
-        address,
-        phoneNumber,
-        description
-      }, { transaction });
+      await instanceHotel.update(
+        {
+          email,
+          password: encrypt(password),
+          name,
+          location: geoLocation,
+          logoHotel,
+          address,
+          phoneNumber,
+          description,
+        },
+        { transaction }
+      );
 
-      await Image.destroy({ where: { HotelId: id }, transaction})
-      const imagesArr = images.map(e => {
+      await Image.destroy({ where: { HotelId: id }, transaction });
+      const imagesArr = images.map((e) => {
         return {
           imageUrl: e,
-          HotelId: id
-        }
-      })
-      await Image.bulkCreate(imagesArr, { transaction })
-      await transaction.commit()
+          HotelId: id,
+        };
+      });
+      await Image.bulkCreate(imagesArr, { transaction });
+      await transaction.commit();
 
       res.status(200).json({ message: `Hotel #${instanceHotel.id} updated` });
     } catch (error) {
-      await transaction.rollback()
+      await transaction.rollback();
       next(error);
     }
   }
   //---------------------SERVICES----------------------
   static async getServices(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel
+      let { id: HotelId } = req.hotel;
 
       const service = await Service.findAll({
         where: { HotelId },
@@ -465,7 +481,7 @@ class HotelController {
 
   static async addService(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel
+      let { id: HotelId } = req.hotel;
 
       const { name, price } = req.body;
 
@@ -479,8 +495,8 @@ class HotelController {
 
   static async updateService(req, res, next) {
     try {
-      const { id } = req.params
-      let { id: HotelId } = req.hotel
+      const { id } = req.params;
+      let { id: HotelId } = req.hotel;
 
       const { name, price } = req.body;
 
@@ -503,8 +519,8 @@ class HotelController {
 
   static async deleteService(req, res, next) {
     try {
-      const { id } = req.params
-      let { id: HotelId } = req.hotel
+      const { id } = req.params;
+      let { id: HotelId } = req.hotel;
 
       const deletedService = await Service.destroy({ where: { id } });
 
@@ -521,7 +537,7 @@ class HotelController {
   //---------------------ROOM-------------------------
   static async getRooms(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel
+      let { id: HotelId } = req.hotel;
 
       const rooms = await Room.findAll({
         where: { HotelId },
@@ -536,7 +552,7 @@ class HotelController {
 
   static async addRoom(req, res, next) {
     try {
-      let { id: HotelId } = req.hotel
+      let { id: HotelId } = req.hotel;
 
       const { name, capacity, price, description, imageUrl } = req.body;
 
@@ -557,8 +573,8 @@ class HotelController {
 
   static async updateRoom(req, res, next) {
     try {
-      const { id } = req.params
-      let { id: HotelId } = req.hotel
+      const { id } = req.params;
+      let { id: HotelId } = req.hotel;
 
       const { name, capacity, price, description, imageUrl } = req.body;
 
@@ -581,8 +597,8 @@ class HotelController {
 
   static async deleteRoom(req, res, next) {
     try {
-      const { id } = req.params
-      let { id: HotelId } = req.hotel
+      const { id } = req.params;
+      let { id: HotelId } = req.hotel;
 
       const deletedRoom = await Room.destroy({ where: { id } });
 
