@@ -298,7 +298,14 @@ class HotelController {
         );
       });
 
-      res.status(200).json(hotelsWithAvailableRooms);
+      const sortByDistance = (hotel) => {
+        return hotel.sort(
+          (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
+        );
+      };
+
+      const sortedHotels = sortByDistance(hotelsWithAvailableRooms);
+      res.status(200).json(sortedHotels);
     } catch (error) {
       next(error);
     }
