@@ -240,6 +240,22 @@ class CustomerController {
     }
   }
 
+  static async getReview(req, res, next) {
+    try {
+      const { id } = req.customer
+
+      const data = await Review.findAll({
+        where: {
+          CustomerId: id
+        }
+      })
+
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   // -------------- IMAGEKIT -------------
   static getImagekitSignature(req, res, next) {
     try {
