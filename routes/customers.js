@@ -28,6 +28,10 @@ router.post("/add-balance", CustomerController.addBalanceCustomer);
 
 router.get("/imagekit", CustomerController.getImagekitSignature);
 
+router.post("/reviews", authenticationCustomer, CustomerController.createReview);
+router.get("/reviews", authenticationCustomer, CustomerController.getReview);
+router.delete("/reviews/:id", CustomerController.deleteReview)
+
 // Untuk keperluan development
 router.get("/:id", CustomerController.readCustomerById);
 router.put("/:id", CustomerController.editCustomer);

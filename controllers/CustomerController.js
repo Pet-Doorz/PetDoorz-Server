@@ -216,6 +216,46 @@ class CustomerController {
     }
   }
 
+  static async createReview(req, res, next) {
+    try {
+      const { id } = req.customer
+      const { rating, comment, bookingId, HotelId } = req.body
+
+      const data = await Review.create({ rating, comment, bookingId, HotelId, CustomerId: id })
+      
+      res.status(201).json({ message: `Review #${data.id} created`})
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async deleteReview(req, res, next) {
+    try {
+      const { id } = req.params
+      const data = await Review.destroy({ where: { id }})
+      
+      res.status(200).json({ message: `Review #${id} deleted`})
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async getReview(req, res, next) {
+    try {
+      const { id } = req.customer
+
+      const data = await Review.findAll({
+        where: {
+          CustomerId: id
+        }
+      })
+
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   // -------------- IMAGEKIT -------------
   static getImagekitSignature(req, res, next) {
     try {
