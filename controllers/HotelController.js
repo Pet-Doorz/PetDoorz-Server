@@ -199,6 +199,9 @@ class HotelController {
         !req.query
       ) {
         const instanceHotels = await Hotel.findAll({
+          where: {
+            status: "active"
+          },
           include: [
             { model: Room, include: [{ model: Booking }] },
             { model: Service },
@@ -277,6 +280,7 @@ class HotelController {
               email: hotel.email,
               name: hotel.name,
               location: hotel.location,
+              status: hotel.status,
               logoHotel: hotel.logoHotel,
               description: hotel.description,
               services: hotel.Services,
@@ -294,10 +298,11 @@ class HotelController {
       const hotelsWithAvailableRooms = dataHotels.filter((hotel) => {
         return (
           hotel.detailRoom.length > 0 &&
-          hotel.detailRoom.every((room) => room.currentCapacity > 0)
+          hotel.detailRoom.every((room) => room.currentCapacity > 0) &&
+          hotel.status === 'active'
         );
       });
-
+      console.log("woyyyyyyyyyyyyyyyyyyyyyyyyyyyyy", dataHotels)
       res.status(200).json(hotelsWithAvailableRooms);
     } catch (error) {
       next(error);
